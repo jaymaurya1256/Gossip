@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Gossip</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_gossip">Add your new Gossip</string>
+    <string name="reply">Add your reply</string>
+    <string name="add_your_tag_here">Add your tag here</string>
+</resources>

@@ -12,6 +12,6 @@
     <string name="signup">Sign Up</string>
     <string name="full_name">Your Full Name</string>
     <string name="contact">Your Contact Number</string>
-    <string name="back_to_login">Back To Login</string>
+    <string name="back_to_login">Login</string>
 
 </resources>

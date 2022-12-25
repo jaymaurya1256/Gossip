@@ -16,6 +16,7 @@
         app:srcCompat="@drawable/ic_baseline_3p_24" />
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/full_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -27,6 +28,7 @@
         />
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -37,6 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/full_name"/>
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/password"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
@@ -47,6 +50,7 @@
         app:layout_constraintTop_toBottomOf="@id/email"/>
     <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/contact"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"

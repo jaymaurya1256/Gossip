@@ -1,11 +1,11 @@
-package dev.jay.gossip
+package dev.jay.gossip.ui.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import dev.jay.gossip.R
 
 
 class AddGossipFragment : BottomSheetDialogFragment() {

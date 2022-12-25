@@ -1,7 +1,8 @@
-package dev.jay.gossip
+package dev.jay.gossip.ui.main
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import dev.jay.gossip.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

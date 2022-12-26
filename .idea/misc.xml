@@ -14,6 +14,7 @@
         <entry key="app/src/main/res/layout/fragment_gossip.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_reply.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/pop_up_window_phone_otp.xml" value="0.19270833333333334" />
       </map>
     </option>
   </component>

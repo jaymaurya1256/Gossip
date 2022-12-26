@@ -13,5 +13,7 @@
     <string name="full_name">Your Full Name</string>
     <string name="contact">Your Contact Number</string>
     <string name="back_to_login">Login</string>
+    <string name="enter_otp">Enter the OTP sent to your contact number</string>
+    <string name="verify">Verify</string>
 
 </resources>

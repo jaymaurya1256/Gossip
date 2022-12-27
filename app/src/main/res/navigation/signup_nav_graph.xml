@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/signup_nav_graph"
+    app:startDestination="@id/signupFragment">
+    <fragment
+        android:id="@+id/signupFragment"
+        android:name="dev.jay.gossip.ui.signup.SignupFragment"
+        android:label="fragment_signup"
+        tools:layout="@layout/fragment_signup" >
+        <action
+            android:id="@+id/action_signupFragment_to_signupOTPVerificationFragment"
+            app:destination="@id/signupOTPVerificationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signupOTPVerificationFragment"
+        android:name="dev.jay.gossip.ui.signup.SignupOTPVerificationFragment"
+        android:label="fragment_signup_o_t_p_verification"
+        tools:layout="@layout/fragment_signup_o_t_p_verification" >
+        <action
+            android:id="@+id/action_signupOTPVerificationFragment_to_signupFragment"
+            app:destination="@id/signupFragment" />
+        <argument
+            android:name="varificationId"
+            app:argType="string" />
+    </fragment>
+</navigation>

@@ -7,7 +7,7 @@
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_comment_24.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/ic_baseline_attach_file_24.xml" value="0.1485" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.33" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_add_gossip.xml" value="0.25" />

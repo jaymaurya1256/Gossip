@@ -3,13 +3,10 @@ package dev.jay.gossip.ui.login
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
-import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityLoginBinding
-import dev.jay.gossip.ui.main.MainActivity
+import dev.jay.gossip.ui.main.activity.MainActivity
 import dev.jay.gossip.ui.signup.SignupActivity
 
 class LoginActivity : AppCompatActivity() {

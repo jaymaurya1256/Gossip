@@ -7,13 +7,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
-import dev.jay.gossip.R
+import dev.jay.gossip.database.User
 import dev.jay.gossip.databinding.FragmentSignupBinding
 import dev.jay.gossip.ui.login.LoginActivity
 import java.util.concurrent.TimeUnit
@@ -22,6 +24,7 @@ private const val TAG = "SignupFragment"
 class SignupFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: FragmentSignupBinding
+    private val viewModel: SignupViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,6 +44,17 @@ class SignupFragment : Fragment() {
             Log.d(TAG, "onCreate: phone number $phoneNumber")
             if (phoneNumber.isNotEmpty()) {
                 if (phoneNumber.length == 10) {
+                    val user = User(
+                        binding.fullName.toString(),
+                        binding.logo.toString(),
+                        binding.contact.toString(),
+                        binding.email.toString(),
+                        "Random String Bio",
+                        45343453464,
+                        "India",
+                        "Random Password"
+                    )
+
                     val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                             signInWithPhoneAuthCredential(credential)
@@ -58,8 +72,10 @@ class SignupFragment : Fragment() {
                             verificationId: String,
                             token: PhoneAuthProvider.ForceResendingToken
                         ) {
+                            viewModel.user = user
                             Log.d(TAG, "onCodeSent: entered")
-                            val action = SignupFragmentDirections.actionSignupFragmentToSignupOTPVerificationFragment(verificationId)
+                            val action = SignupFragmentDirections
+                                .actionSignupFragmentToSignupOTPVerificationFragment(verificationId)
                             findNavController().navigate(action)
                         }
                     }

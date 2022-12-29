@@ -12,9 +12,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthProvider
-import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentSignupOTPVerificationBinding
-import dev.jay.gossip.ui.main.MainActivity
+import dev.jay.gossip.ui.main.activity.MainActivity
 
 private const val TAG = "SignupOTPVerificationFr"
 class SignupOTPVerificationFragment : Fragment() {
@@ -45,7 +44,8 @@ class SignupOTPVerificationFragment : Fragment() {
                             if (task.isSuccessful) {
                                 Log.d(TAG, "onViewCreated: successfully signed in")
                                 Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
-                                val intent = Intent(requireActivity(),MainActivity::class.java)
+                                val user = task.result?.user?.uid
+                                val intent = Intent(requireActivity(), MainActivity::class.java).putExtra("user",user)
                                 startActivity(intent)
                             } else {
                                 if (task.exception is FirebaseAuthInvalidCredentialsException) {

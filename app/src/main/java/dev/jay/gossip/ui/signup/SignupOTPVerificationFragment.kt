@@ -7,20 +7,29 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthProvider
+import dev.jay.gossip.database.User
+import dev.jay.gossip.databinding.FragmentSignupBinding
 import dev.jay.gossip.databinding.FragmentSignupOTPVerificationBinding
 import dev.jay.gossip.ui.main.activity.MainActivity
+import kotlinx.coroutines.launch
 
 private const val TAG = "SignupOTPVerificationFr"
 class SignupOTPVerificationFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupOTPVerificationBinding
+    private lateinit var fragmentBinding: FragmentSignupBinding
     private lateinit var auth: FirebaseAuth
+    private val viewModel: SignupViewModel by activityViewModels()
+
     private val args by navArgs<SignupOTPVerificationFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,8 +53,20 @@ class SignupOTPVerificationFragment : Fragment() {
                             if (task.isSuccessful) {
                                 Log.d(TAG, "onViewCreated: successfully signed in")
                                 Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
-                                val user = task.result?.user?.uid
-                                val intent = Intent(requireActivity(), MainActivity::class.java).putExtra("user",user)
+                                val user = User(
+                                    fragmentBinding.fullName.toString(),
+                                    fragmentBinding.logo.toString(),
+                                    fragmentBinding.contact.toString(),
+                                    fragmentBinding.email.toString(),
+                                    "Random String Bio",
+                                    45343453464,
+                                    "India",
+                                    "Random Password"
+                                )
+                                lifecycleScope.launch {
+                                    viewModel.addUser(user)
+                                }
+                                val intent = Intent(requireActivity(), MainActivity::class.java)
                                 startActivity(intent)
                             } else {
                                 if (task.exception is FirebaseAuthInvalidCredentialsException) {

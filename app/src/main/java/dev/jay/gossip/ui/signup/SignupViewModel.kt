@@ -12,7 +12,6 @@ class SignupViewModel @Inject constructor(
     private val db: UserDAO
 ) : ViewModel() {
 
-    lateinit var user: User
 
-    suspend fun addUser() = db.addUser(user)
+    suspend fun addUser(user: User) = db.addUser(user)
 }

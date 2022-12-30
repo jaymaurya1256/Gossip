@@ -1,11 +1,12 @@
 package dev.jay.gossip.database
 
 import androidx.room.Entity
+import androidx.room.PrimaryKey
 import org.jetbrains.annotations.Nullable
 
 @Entity
 data class User(
-    val name: String,
+    @PrimaryKey val name: String,
     @Nullable val photo: String,
     @Nullable val phone: String,
     @Nullable val email: String,

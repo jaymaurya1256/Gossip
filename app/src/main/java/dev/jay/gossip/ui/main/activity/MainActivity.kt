@@ -13,11 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        try {
-            val userUid = intent.extras!!.getString("user")
-            viewModel.initUserUID(userUid!!)
-        }catch (e: Exception) {
-            Snackbar.make(binding.root, "Unable to retrieve info of user", Snackbar.LENGTH_SHORT).show()
-        }
+
     }
 }

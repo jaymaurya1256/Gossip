@@ -44,17 +44,6 @@ class SignupFragment : Fragment() {
             Log.d(TAG, "onCreate: phone number $phoneNumber")
             if (phoneNumber.isNotEmpty()) {
                 if (phoneNumber.length == 10) {
-                    val user = User(
-                        binding.fullName.toString(),
-                        binding.logo.toString(),
-                        binding.contact.toString(),
-                        binding.email.toString(),
-                        "Random String Bio",
-                        45343453464,
-                        "India",
-                        "Random Password"
-                    )
-
                     val callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         override fun onVerificationCompleted(credential: PhoneAuthCredential) {
                             signInWithPhoneAuthCredential(credential)
@@ -72,7 +61,6 @@ class SignupFragment : Fragment() {
                             verificationId: String,
                             token: PhoneAuthProvider.ForceResendingToken
                         ) {
-                            viewModel.user = user
                             Log.d(TAG, "onCodeSent: entered")
                             val action = SignupFragmentDirections
                                 .actionSignupFragmentToSignupOTPVerificationFragment(verificationId)

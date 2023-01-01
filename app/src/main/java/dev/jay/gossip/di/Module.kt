@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import dev.jay.gossip.database.UserDAO
 import dev.jay.gossip.database.UserDatabase
 import javax.inject.Singleton
 
@@ -20,5 +21,11 @@ class Module {
         return Room.databaseBuilder(
             applicationContext, UserDatabase::class.java, "user"
         ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideDao(db: UserDatabase): UserDAO{
+        return db.userDao()
     }
 }

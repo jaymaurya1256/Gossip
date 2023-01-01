@@ -40,7 +40,7 @@ class SignupFragment : Fragment() {
 
         binding.signup.setOnClickListener {
             Log.d(TAG, "onCreate: entered")
-            val phoneNumber = binding.contact.text.toString()
+            val phoneNumber = binding.contact.editText.toString()
             Log.d(TAG, "onCreate: phone number $phoneNumber")
             if (phoneNumber.isNotEmpty()) {
                 if (phoneNumber.length == 10) {

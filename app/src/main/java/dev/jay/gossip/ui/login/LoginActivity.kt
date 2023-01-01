@@ -18,8 +18,8 @@ class LoginActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.loginButton.setOnClickListener{
-            val email = binding.email.text.toString()
-            val password = binding.password.text.toString()
+            val email = binding.email.editText.toString()
+            val password = binding.password.editText.toString()
             if (email.isEmpty() || password.isEmpty()) {
                 Snackbar.make(this,binding.root,"Either email or password is empty", Snackbar.LENGTH_SHORT).show()
             }else{

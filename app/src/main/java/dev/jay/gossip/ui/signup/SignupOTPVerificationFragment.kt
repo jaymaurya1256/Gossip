@@ -44,36 +44,30 @@ class SignupOTPVerificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.fabOtpVerify.setOnClickListener {
             if (binding.inputFieldOtp.text.toString().isNotEmpty()) {
-                Log.d(TAG, "onViewCreated: fab clicked")
                 val credential = PhoneAuthProvider.getCredential(args.varificationId, binding.inputFieldOtp.text.toString())
-                Log.d(TAG, "onViewCreated: credential made")
                 try {
-                    Log.d(TAG, "onViewCreated: entered try block")
                     auth.signInWithCredential(credential).addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                Log.d(TAG, "onViewCreated: successfully signed in")
-                                Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
-                                val user = User(
-                                    fragmentBinding.fullName.toString(),
-                                    fragmentBinding.logo.toString(),
-                                    fragmentBinding.contact.toString(),
-                                    fragmentBinding.email.toString(),
-                                    "Random String Bio",
-                                    45343453464,
-                                    "India",
-                                    "Random Password"
-                                )
-                                lifecycleScope.launch {
-                                    viewModel.addUser(user)
-                                }
-                                val intent = Intent(requireActivity(), MainActivity::class.java)
-                                startActivity(intent)
-                            } else {
-                                if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                                    Log.d(TAG, "onViewCreated: not able to sign in")
-                                }
+                        if (task.isSuccessful) {
+                            Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
+                            val user = User(
+                                fragmentBinding.fullName.toString(),
+                                fragmentBinding.image.toString(),
+                                fragmentBinding.contact.toString(),
+                                fragmentBinding.email.toString(),
+                                "Random String Bio",
+                                45343453464,
+                                "India",
+                                "Random Password"
+                            )
+                            viewModel.addUser(user)
+                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                                Snackbar.make(binding.root, "Not able to sign in", Snackbar.LENGTH_SHORT).show()
                             }
                         }
+                    }
 
                 }catch (e: Exception) {
                     Snackbar.make(binding.root, "OTP is wrong, Please Re-Check it thoroughly", Snackbar.LENGTH_SHORT).show()

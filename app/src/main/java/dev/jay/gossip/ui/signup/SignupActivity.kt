@@ -32,12 +32,4 @@ class SignupActivity : AppCompatActivity() {
 
 
     }
-    /**
-    private fun gotoOTPVerification(verificationId: String, binding: FragmentSignupBinding) {
-        Log.d(TAG, "popUpInputCode: entered")
-        val action = SignupFragmentDirections.actionSignupFragmentToSignupOTPVerificationFragment()
-        val credential = PhoneAuthProvider.getCredential(verificationId!!,)
-        signInWithPhoneAuthCredential(credential)
-    }**/
-
 }

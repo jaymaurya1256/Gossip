@@ -16,6 +16,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.FirebaseException
 import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
+import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.databinding.ActivitySignupBinding
@@ -24,6 +25,7 @@ import dev.jay.gossip.ui.login.LoginActivity
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "SignupActivity"
+@AndroidEntryPoint
 class SignupActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

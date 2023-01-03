@@ -9,11 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.PhoneAuthProvider
+import dagger.hilt.android.AndroidEntryPoint
+import dev.jay.gossip.R
 import dev.jay.gossip.database.User
 import dev.jay.gossip.databinding.FragmentSignupBinding
 import dev.jay.gossip.databinding.FragmentSignupOTPVerificationBinding
@@ -21,6 +24,7 @@ import dev.jay.gossip.ui.main.activity.MainActivity
 import kotlinx.coroutines.launch
 
 private const val TAG = "SignupOTPVerificationFr"
+@AndroidEntryPoint
 class SignupOTPVerificationFragment : Fragment() {
 
     private lateinit var binding: FragmentSignupOTPVerificationBinding
@@ -50,10 +54,10 @@ class SignupOTPVerificationFragment : Fragment() {
                         if (task.isSuccessful) {
                             Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
                             val user = User(
-                                fragmentBinding.fullName.toString(),
+                                viewModel.name,
                                 fragmentBinding.image.toString(),
-                                fragmentBinding.contact.toString(),
-                                fragmentBinding.email.toString(),
+                                viewModel.phoneNumber,
+                                viewModel.email,
                                 "Random String Bio",
                                 45343453464,
                                 "India",
@@ -75,6 +79,12 @@ class SignupOTPVerificationFragment : Fragment() {
             }else{
                 Snackbar.make(binding.root, "Please Enter the OTP", Snackbar.LENGTH_SHORT).show()
             }
+        }
+        binding.back.setOnClickListener {
+            findNavController().navigate(R.id.action_signupOTPVerificationFragment_to_signUpSecondPage)
+        }
+        binding.cancelButton.setOnClickListener {
+            findNavController().navigate(R.id.action_signupOTPVerificationFragment_to_signupFragment)
         }
     }
 }

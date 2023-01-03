@@ -1,5 +1,7 @@
 package dev.jay.gossip.ui.signup
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,6 +15,11 @@ import javax.inject.Inject
 class SignupViewModel @Inject constructor(
     private val db: UserDAO
 ) : ViewModel() {
+    val verificationId = MutableLiveData<String>()
+    var name: String = ""
+    var phoneNumber: String =""
+    var email: String = ""
+
     fun addUser(user: User) {
         viewModelScope.launch {
             db.addUser(user)

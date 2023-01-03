@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_homeFragment_to_gossipFragment"
             app:destination="@id/gossipFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_addGossipFragment"
+            app:destination="@id/addGossipFragment" />
     </fragment>
     <fragment
         android:id="@+id/gossipFragment"
@@ -20,11 +23,11 @@
         android:label="fragment_gossip"
         tools:layout="@layout/fragment_gossip" >
         <action
-            android:id="@+id/action_gossipFragment_to_addGossipFragment"
-            app:destination="@id/addGossipFragment" />
-        <action
             android:id="@+id/action_gossipFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_gossipFragment_to_replyFragment"
+            app:destination="@id/replyFragment" />
     </fragment>
     <dialog
         android:id="@+id/addGossipFragment"
@@ -32,7 +35,15 @@
         android:label="fragment_reply"
         tools:layout="@layout/fragment_reply" >
         <action
-            android:id="@+id/action_addGossipFragment_to_gossipFragment"
+            android:id="@+id/action_addGossipFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/replyFragment"
+        android:name="dev.jay.gossip.ui.main.ReplyFragment"
+        android:label="ReplyFragment" >
+        <action
+            android:id="@+id/action_replyFragment_to_gossipFragment"
             app:destination="@id/gossipFragment" />
     </dialog>
 </navigation>

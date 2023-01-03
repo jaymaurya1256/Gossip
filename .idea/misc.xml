@@ -14,8 +14,8 @@
         <entry key="app/src/main/res/layout/fragment_gossip.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.18" />
         <entry key="app/src/main/res/layout/fragment_reply.xml" value="0.19375" />
-        <entry key="app/src/main/res/layout/fragment_sign_up_second_page.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/fragment_sign_up_second_page.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_signup_o_t_p_verification.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/pop_up_window_phone_otp.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/sign_up_second_page.xml" value="0.25" />

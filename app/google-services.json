@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "987846523142-akivftni6llrpuqpqhn2i0mhc4hqabmk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.jay.gossip",
+            "certificate_hash": "2e54c2e0431a6b6a77317b8bdb0a2ca8ffc803f8"
+          }
+        },
+        {
           "client_id": "987846523142-tk882bbg0ksl88e4mtc00s2mncfl8j1m.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

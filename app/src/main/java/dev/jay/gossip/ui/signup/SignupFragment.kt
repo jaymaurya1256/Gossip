@@ -96,6 +96,7 @@ class SignupFragment : Fragment() {
     private val signInIntent = AuthUI.getInstance()
         .createSignInIntentBuilder()
         .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
+        .setIsSmartLockEnabled(false)
         .build()
 
 

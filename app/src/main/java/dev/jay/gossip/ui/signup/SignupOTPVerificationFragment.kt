@@ -84,10 +84,8 @@ class SignupOTPVerificationFragment : Fragment() {
             }
         }
         binding.back.setOnClickListener {
-            findNavController().navigate(R.id.action_signupOTPVerificationFragment_to_signUpSecondPage)
         }
         binding.cancelButton.setOnClickListener {
-            findNavController().navigate(R.id.action_signupOTPVerificationFragment_to_signupFragment)
         }
     }
 }

@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.signup
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,14 +15,16 @@ import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
-import dev.jay.gossip.databinding.FragmentSignUpSecondPageBinding
-import dev.jay.gossip.databinding.FragmentSignupBinding
+import dev.jay.gossip.databinding.FragmentRegisterBinding
+import java.text.SimpleDateFormat
+import java.time.Year
+import java.util.*
 import java.util.concurrent.TimeUnit
 
-private const val TAG = "SignUpSecondPage"
+private const val TAG = "RegisterFragment"
 @AndroidEntryPoint
-class SignUpSecondPage : Fragment() {
-    private lateinit var binding: FragmentSignUpSecondPageBinding
+class RegisterFragment : Fragment() {
+    private lateinit var binding: FragmentRegisterBinding
     private val viewModel: SignupViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
 
@@ -35,7 +38,7 @@ class SignUpSecondPage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentSignUpSecondPageBinding.inflate(inflater, container, false)
+        binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -66,7 +69,6 @@ class SignUpSecondPage : Fragment() {
                         ) {
                             Log.d(TAG, "onCodeSent: entered")
                             viewModel.verificationId.value = verificationId
-                            findNavController().navigate(R.id.action_signUpSecondPage_to_signupOTPVerificationFragment)
                         }
                     }
                     val options = PhoneAuthOptions.newBuilder(auth)
@@ -85,7 +87,23 @@ class SignUpSecondPage : Fragment() {
         }
 
         binding.back.setOnClickListener {
-            findNavController().navigate(R.id.action_signUpSecondPage_to_signupFragment)
+        }
+        binding.dataOfBirth.setOnClickListener {
+            val myCalender = Calendar.getInstance()
+            val datePickerListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+                myCalender.set(Calendar.YEAR, year)
+                myCalender.set(Calendar.MONTH, month)
+                myCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                viewModel.dateOfBirth = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).toString()
+                binding.dataOfBirth.text = viewModel.dateOfBirth
+            }
+            DatePickerDialog(
+                requireContext(),
+                datePickerListener,
+                myCalender.get(Calendar.YEAR),
+                myCalender.get(Calendar.MONTH),
+                myCalender.get(Calendar.DAY_OF_MONTH)
+            ).show()
         }
     }
 

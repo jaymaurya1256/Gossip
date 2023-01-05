@@ -12,7 +12,7 @@
     <string name="signup">Sign Up</string>
     <string name="full_name">Your Full Name</string>
     <string name="contact">Your Contact Number</string>
-    <string name="back_to_login">Login</string>
+    <string name="back_to_login">Go To Login</string>
     <string name="enter_otp">Enter the OTP sent to your contact number</string>
     <string name="verify">Verify</string>
     <string name="login_with_google">Login with Google</string>
@@ -24,5 +24,4 @@
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
     <string name="your_web_client_id">987846523142-d5rtu4ls8qqqiqkgdntd18bos216ffan.apps.googleusercontent.com</string>
-
 </resources>

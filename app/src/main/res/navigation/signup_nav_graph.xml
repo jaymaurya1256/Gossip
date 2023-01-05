@@ -10,31 +10,12 @@
         android:label="fragment_signup"
         tools:layout="@layout/fragment_signup" >
         <action
-            android:id="@+id/action_signupFragment_to_signUpSecondPage"
-            app:destination="@id/signUpSecondPage" />
+            android:id="@+id/action_signupFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
     </fragment>
     <fragment
-        android:id="@+id/signupOTPVerificationFragment"
-        android:name="dev.jay.gossip.ui.signup.SignupOTPVerificationFragment"
-        android:label="fragment_signup_o_t_p_verification"
-        tools:layout="@layout/fragment_signup_o_t_p_verification" >
-        <action
-            android:id="@+id/action_signupOTPVerificationFragment_to_signupFragment"
-            app:destination="@id/signupFragment" />
-        <action
-            android:id="@+id/action_signupOTPVerificationFragment_to_signUpSecondPage"
-            app:destination="@id/signUpSecondPage" />
-    </fragment>
-    <fragment
-        android:id="@+id/signUpSecondPage"
-        android:name="dev.jay.gossip.ui.signup.SignUpSecondPage"
-        android:label="fragment_sign_up_second_page"
-        tools:layout="@layout/fragment_sign_up_second_page" >
-        <action
-            android:id="@+id/action_signUpSecondPage_to_signupOTPVerificationFragment"
-            app:destination="@id/signupOTPVerificationFragment" />
-        <action
-            android:id="@+id/action_signUpSecondPage_to_signupFragment"
-            app:destination="@id/signupFragment" />
-    </fragment>
+        android:id="@+id/registerFragment"
+        android:name="dev.jay.gossip.ui.signup.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
 </navigation>

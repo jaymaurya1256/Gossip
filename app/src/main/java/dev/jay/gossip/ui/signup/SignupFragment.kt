@@ -78,21 +78,6 @@ class SignupFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.next.setOnClickListener {
-            if (
-                binding.fullName.editText?.text.toString().isNotBlank()
-                && binding.contact.editText?.text.toString().isNotBlank()
-                && binding.email.editText?.text.toString().isNotBlank()
-            ) {
-                Log.d(TAG, "onViewCreated: ${binding.fullName.editText.toString()}")
-                viewModel.name = binding.fullName.editText?.text.toString()
-                viewModel.phoneNumber = binding.contact.editText?.text.toString()
-                viewModel.email = binding.email.editText?.text.toString()
-                findNavController().navigate(R.id.action_signupFragment_to_signUpSecondPage)
-            }else {
-                Snackbar.make(binding.root, "All the fields are required field", Snackbar.LENGTH_SHORT).show()
-            }
-        }
 
         binding.backToLogin.setOnClickListener {
             val intent = Intent(requireActivity(), LoginActivity::class.java)
@@ -108,9 +93,9 @@ class SignupFragment : Fragment() {
     ) { res ->
         this.onSignInResult(res)
     }
-    val signInIntent = AuthUI.getInstance()
+    private val signInIntent = AuthUI.getInstance()
         .createSignInIntentBuilder()
-        .setAvailableProviders(listOf(AuthUI.IdpConfig.EmailBuilder().build()))
+        .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         .build()
 
 

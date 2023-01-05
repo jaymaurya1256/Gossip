@@ -15,37 +15,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_3p_24" />
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/full_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:hint="@string/full_name"
-        android:layout_margin="16dp"
-        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/image">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-        />
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/email"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:hint="@string/email"
-        android:layout_margin="16dp"
-        style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/full_name">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +24,7 @@
         style="@style/ThemeOverlay.Material3.AutoCompleteTextView.OutlinedBox.Dense"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email">
+        app:layout_constraintTop_toBottomOf="@id/image">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

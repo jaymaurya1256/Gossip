@@ -32,7 +32,6 @@ class SignupOTPVerificationFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private val viewModel: SignupViewModel by activityViewModels()
 
-    private val args by navArgs<SignupOTPVerificationFragmentArgs>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,10 +47,11 @@ class SignupOTPVerificationFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.fabOtpVerify.setOnClickListener {
             if (binding.inputFieldOtp.text.toString().isNotEmpty()) {
-                val credential = PhoneAuthProvider.getCredential(args.varificationId, binding.inputFieldOtp.text.toString())
+                val credential = PhoneAuthProvider.getCredential(viewModel.verificationId.value!!, binding.inputFieldOtp.text.toString())
                 try {
                     auth.signInWithCredential(credential).addOnCompleteListener { task ->
                         if (task.isSuccessful) {
+                            Log.d(TAG, "onViewCreated: signed in")
                             Snackbar.make(binding.root, "Successfully Signed in", Snackbar.LENGTH_SHORT).show()
                             val user = User(
                                 viewModel.name,
@@ -63,8 +63,11 @@ class SignupOTPVerificationFragment : Fragment() {
                                 "India",
                                 "Random Password"
                             )
+                            Log.d(TAG, "onViewCreated: user created")
                             viewModel.addUser(user)
+                            Log.d(TAG, "onViewCreated: user added")
                             val intent = Intent(requireActivity(), MainActivity::class.java)
+                            Log.d(TAG, "onViewCreated: intent created : starting a new activity")
                             startActivity(intent)
                         } else {
                             if (task.exception is FirebaseAuthInvalidCredentialsException) {

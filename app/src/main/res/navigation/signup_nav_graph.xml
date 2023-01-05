@@ -21,9 +21,6 @@
         <action
             android:id="@+id/action_signupOTPVerificationFragment_to_signupFragment"
             app:destination="@id/signupFragment" />
-        <argument
-            android:name="varificationId"
-            app:argType="string" />
         <action
             android:id="@+id/action_signupOTPVerificationFragment_to_signUpSecondPage"
             app:destination="@id/signUpSecondPage" />

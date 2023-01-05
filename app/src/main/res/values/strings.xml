@@ -25,6 +25,7 @@
     <string name="nationality">Nationality(Optional)</string>
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>
+    <string name="save_info">Save Info</string>
     <string name="your_web_client_id">987846523142-d5rtu4ls8qqqiqkgdntd18bos216ffan.apps.googleusercontent.com</string>
 
 </resources>

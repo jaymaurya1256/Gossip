@@ -79,12 +79,11 @@ class SignupFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        binding.backToLogin.setOnClickListener {
-            val intent = Intent(requireActivity(), LoginActivity::class.java)
-            startActivity(intent)
+        binding.signInWithPhone.setOnClickListener {
+            signInLauncher.launch(signInIntentPhone)
         }
         binding.signInWithGoogle.setOnClickListener {
-            signInLauncher.launch(signInIntent)
+            signInLauncher.launch(signInIntentGoogle)
         }
     }
 
@@ -93,7 +92,14 @@ class SignupFragment : Fragment() {
     ) { res ->
         this.onSignInResult(res)
     }
-    private val signInIntent = AuthUI.getInstance()
+
+    private val signInIntentPhone = AuthUI.getInstance()
+        .createSignInIntentBuilder()
+        .setAvailableProviders(listOf(AuthUI.IdpConfig.PhoneBuilder().build()))
+        .setIsSmartLockEnabled(false)
+        .build()
+
+    private val signInIntentGoogle = AuthUI.getInstance()
         .createSignInIntentBuilder()
         .setAvailableProviders(listOf(AuthUI.IdpConfig.GoogleBuilder().build()))
         .setIsSmartLockEnabled(false)

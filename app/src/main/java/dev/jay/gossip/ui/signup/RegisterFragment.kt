@@ -58,11 +58,13 @@ class RegisterFragment : Fragment() {
         }
         binding.dataOfBirth.setOnClickListener {
             val myCalender = Calendar.getInstance()
-            val datePickerListener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
                 myCalender.set(Calendar.YEAR, year)
                 myCalender.set(Calendar.MONTH, month)
                 myCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                viewModel.dateOfBirth = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).toString()
+                viewModel.dateOfBirth = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                    .format(myCalender.time)
+                    .toString()
                 binding.dataOfBirth.text = viewModel.dateOfBirth
             }
             DatePickerDialog(

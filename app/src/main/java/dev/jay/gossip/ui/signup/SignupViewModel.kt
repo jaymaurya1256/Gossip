@@ -20,6 +20,8 @@ class SignupViewModel @Inject constructor(
     var phoneNumber: String =""
     var email: String = ""
     var dateOfBirth = ""
+    var bio = ""
+    var country = ""
 
     fun addUser(user: User) {
         viewModelScope.launch {

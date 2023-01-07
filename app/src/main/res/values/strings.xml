@@ -21,7 +21,7 @@
     <string name="sign_in_with_phone">Sign In with Phone</string>
     <string name="bio">Tell us about yourself</string>
     <string name="next">Next</string>
-    <string name="date_of_birth">Add Date Of Birth</string>
+    <string name="date_of_birth">DOB</string>
     <string name="nationality">Nationality(Optional)</string>
     <string name="back">Back</string>
     <string name="cancel">Cancel</string>

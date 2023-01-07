@@ -1,7 +1,10 @@
 package dev.jay.gossip.ui.signup
 
+import android.app.Application
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -48,8 +51,36 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.signUp.setOnClickListener{
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            startActivity(intent)
+            val name = binding.fullName.editText?.text.toString()
+            val email = binding.email.editText?.text.toString()
+            val phone = binding.phone.editText?.text.toString()
+            val bio = binding.bio.editText?.text.toString()
+            val country = binding.country.editText?.text.toString()
+
+            if (name.isNotBlank()){
+                viewModel.name = name
+                viewModel.email = email
+                viewModel.phoneNumber = phone
+                viewModel.bio = bio
+                viewModel.country = country
+                try {
+                    val sharedPreference =  requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+                    val editor = sharedPreference.edit()
+                    editor.apply {
+                        putString("Name", viewModel.name)
+                        putString("Email", viewModel.email)
+                        putString("Phone", viewModel.phoneNumber)
+                        putString("Bio", viewModel.bio)
+                        putString("Country", viewModel.country)
+                        val intent = Intent(requireActivity(), MainActivity::class.java)
+                        startActivity(intent)
+                    }.apply()
+                }catch (e: Exception) {
+                    Snackbar.make(binding.root,"$e",Snackbar.LENGTH_SHORT).show()
+                }
+            }else{
+                binding.fullName.error = "This is a required field"
+            }
         }
 
         binding.back.setOnClickListener {
@@ -75,17 +106,5 @@ class RegisterFragment : Fragment() {
                 myCalender.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
-    }
-
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val user = task.result?.user
-                } else {
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                    }
-                }
-            }
     }
 }

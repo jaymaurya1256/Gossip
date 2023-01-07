@@ -5,6 +5,7 @@
       <map>
         <entry key="app/src/main/res/drawable/ic_baseline_3p_24.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/ic_baseline_account_circle_24.xml" value="0.1485" />
+        <entry key="app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_comment_24.xml" value="0.1485" />
         <entry key="app/src/main/res/drawable/ic_baseline_add_comment_36.xml" value="0.1165" />
         <entry key="app/src/main/res/drawable/ic_baseline_attach_file_24.xml" value="0.1485" />
@@ -19,7 +20,7 @@
         <entry key="app/src/main/res/layout/fragment_add_gossip.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_gossip.xml" value="0.1712962962962963" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.19375" />
+        <entry key="app/src/main/res/layout/fragment_register.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_reply.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_sign_up_second_page.xml" value="0.22" />
         <entry key="app/src/main/res/layout/fragment_signup.xml" value="0.25" />

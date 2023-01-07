@@ -29,14 +29,6 @@
             tools:srcCompat="@drawable/fui_ic_anonymous_white_24dp" />
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/image_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:foregroundTint="#232323"
-        android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="@+id/card_image"
-        app:layout_constraintEnd_toEndOf="@+id/card_image" />
 
     <TextView
         android:id="@+id/or"

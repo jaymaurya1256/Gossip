@@ -12,7 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:src="@drawable/ic_baseline_attach_file_24"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/reply"
         app:layout_constraintStart_toStartOf="parent"/>
 
     <ImageView
@@ -22,9 +23,10 @@
         android:layout_margin="8dp"
         android:src="@drawable/ic_baseline_send_24"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/reply"
+        app:layout_constraintBottom_toBottomOf="@id/reply"/>
 
-    <com.google.android.material.textfield.TextInputEditText
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/reply"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
@@ -32,6 +34,10 @@
         android:hint="@string/reply"
         app:layout_constraintEnd_toStartOf="@id/send"
         app:layout_constraintStart_toEndOf="@id/attachment"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

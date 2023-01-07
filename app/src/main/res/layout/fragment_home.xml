@@ -10,8 +10,8 @@
     <ImageView
         android:id="@+id/logo"
         android:layout_margin="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:src="@drawable/ic_baseline_add_comment_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -20,8 +20,8 @@
     <ImageView
         android:id="@+id/profile_image"
         android:layout_margin="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:src="@drawable/ic_baseline_account_circle_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,8 +29,8 @@
     <ImageView
         android:id="@+id/info"
         android:layout_margin="8dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:src="@drawable/ic_baseline_info_24"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -49,9 +49,9 @@
         android:id="@+id/add_gossip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_add_comment_24"
         android:contentDescription="@string/app_name"
         android:layout_margin="8dp"
+        android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 

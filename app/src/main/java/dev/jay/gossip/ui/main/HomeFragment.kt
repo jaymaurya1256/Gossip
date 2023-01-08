@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,10 +45,11 @@ class HomeFragment() : Fragment() {
             val sharedPreferences = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
             val name = sharedPreferences.getString("Name", null)
             Snackbar.make(binding.root, "Hi...$name", Snackbar.LENGTH_SHORT).show()
-
         }catch (e: Exception) {
             Snackbar.make(binding.root, "No User data were found", Snackbar.LENGTH_SHORT).show()
         }
+        binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+        binding.recyclerView.adapter = HomeAdapter()
         binding.addGossip.setOnClickListener {
             Snackbar.make(binding.root, "hi this is a snack bar", Snackbar.LENGTH_SHORT).show()
         }

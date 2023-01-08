@@ -73,6 +73,7 @@ class RegisterFragment : Fragment() {
                         putString("Bio", viewModel.bio)
                         putString("Country", viewModel.country)
                         val intent = Intent(requireActivity(), MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
                     }.apply()
                 }catch (e: Exception) {

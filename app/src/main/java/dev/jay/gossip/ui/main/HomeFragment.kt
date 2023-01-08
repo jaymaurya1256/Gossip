@@ -1,6 +1,7 @@
 package dev.jay.gossip.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.databinding.FragmentHomeBinding
+import dev.jay.gossip.ui.main.activity.MainActivity
 import dev.jay.gossip.ui.main.activity.MainViewModel
 
 private const val TAG = "HomeFragment"

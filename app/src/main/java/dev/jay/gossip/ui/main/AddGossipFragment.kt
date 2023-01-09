@@ -41,8 +41,9 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                 binding.addGossip.error = "Please add a Gossip"
             }else{
                 val gossip = hashMapOf(
-                    "Uid" to "${auth.uid}",
-                    "Gossip" to binding.addGossip.editText?.text.toString()
+                    "Creator Name" to "Name from user collection",
+                    "Gossip" to binding.addGossip.editText?.text.toString(),
+                    "Tags" to listOf("Android, Dev")
                 )
                 fireStoreDatabase.collection("gossip")
                     .add(gossip)
@@ -52,7 +53,6 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                     }
                     .addOnFailureListener {
                         Log.d(TAG, "onViewCreated: $it")
-                        Snackbar.make(binding.root,"Failed to add your Gossip", Snackbar.LENGTH_SHORT).show()
                         findNavController().popBackStack()
                     }
             }

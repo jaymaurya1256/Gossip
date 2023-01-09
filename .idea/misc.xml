@@ -30,6 +30,7 @@
         <entry key="app/src/main/res/layout/list_item_gossip.xml" value="0.33" />
         <entry key="app/src/main/res/layout/pop_up_window_phone_otp.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/sign_up_second_page.xml" value="0.25" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
       </map>
     </option>
   </component>

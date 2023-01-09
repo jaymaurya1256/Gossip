@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
+import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentHomeBinding
 import dev.jay.gossip.ui.main.activity.MainActivity
 import dev.jay.gossip.ui.main.activity.MainViewModel
@@ -52,6 +54,7 @@ class HomeFragment() : Fragment() {
         binding.recyclerView.adapter = HomeAdapter()
         binding.addGossip.setOnClickListener {
             Snackbar.make(binding.root, "hi this is a snack bar", Snackbar.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
         }
     }
 }

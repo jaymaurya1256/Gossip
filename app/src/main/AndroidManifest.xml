@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.jay.gossip">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".Gossip"
         android:allowBackup="true"

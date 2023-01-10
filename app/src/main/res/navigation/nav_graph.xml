@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_gossipFragment_to_replyFragment"
             app:destination="@id/replyFragment" />
+        <argument
+            android:name="documentName"
+            app:argType="string" />
     </fragment>
     <dialog
         android:id="@+id/addGossipFragment"

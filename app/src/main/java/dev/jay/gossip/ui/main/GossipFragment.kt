@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,5 +49,9 @@ class GossipFragment : Fragment() {
             .addOnFailureListener {
                 Snackbar.make(binding.root,"Failed to fetch data", Snackbar.LENGTH_SHORT).show()
             }
+        binding.addReply.setOnClickListener {
+            val action = GossipFragmentDirections.actionGossipFragmentToReplyFragment(args.documentName)
+            findNavController().navigate(action)
+        }
     }
 }

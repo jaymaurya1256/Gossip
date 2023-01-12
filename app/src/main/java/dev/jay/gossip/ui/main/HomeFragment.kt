@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -50,17 +53,21 @@ class HomeFragment() : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Check if user is already logged in or not
         try {
-            //val sharedPreferences = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+            val sharedPreferences = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
         }catch (e: Exception) {
             Snackbar.make(binding.root, "No User data were found", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(requireActivity(), SignupActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
+
+        //Fetch content and provide it to the Recycler View Adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         sharedViewModel.reFetchAllGossip.value = true
-        sharedViewModel.reFetchAllGossip.observe(viewLifecycleOwner){
+        sharedViewModel.reFetchAllGossip.observe(viewLifecycleOwner) {
             if (it == true){
                 fireStoreDatabase.collection("gossip").get()
                     .addOnSuccessListener { result ->
@@ -77,6 +84,11 @@ class HomeFragment() : Fragment() {
         }
         binding.addGossip.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
+        }
+        binding.profileImage.setOnClickListener {
+        }
+        binding.setting.setOnClickListener {
+
         }
     }
 }

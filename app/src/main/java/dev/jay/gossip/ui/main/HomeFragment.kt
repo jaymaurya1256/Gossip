@@ -6,13 +6,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
@@ -20,10 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
-import dev.jay.gossip.database.UserDatabase
 import dev.jay.gossip.databinding.FragmentHomeBinding
-import dev.jay.gossip.ui.main.activity.MainActivity
-import dev.jay.gossip.ui.main.activity.MainViewModel
 import dev.jay.gossip.ui.signup.SignupActivity
 
 private const val TAG = "HomeFragment"

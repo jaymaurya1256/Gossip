@@ -2,6 +2,8 @@ package dev.jay.gossip.di
 
 import android.content.Context
 import androidx.room.Room
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -28,4 +30,16 @@ class Module {
     fun provideDao(db: UserDatabase): UserDAO{
         return db.userDao()
     }
+
+    @Provides
+    @Singleton
+    fun provideFireStoreDatabase(): FirebaseFirestore {
+        return FirebaseFirestore.getInstance()
+    }
+    @Provides
+    @Singleton
+    fun provideFireBaseAuth(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
+
 }

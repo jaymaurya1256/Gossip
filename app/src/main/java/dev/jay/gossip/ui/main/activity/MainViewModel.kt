@@ -16,9 +16,4 @@ class MainViewModel @Inject constructor(
     private val db: UserDAO
 ): ViewModel() {
 
-    fun removeUser(user: User){
-        viewModelScope.launch {
-            db.addRemove(user)
-        }
-    }
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.ktx.auth

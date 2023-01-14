@@ -24,8 +24,8 @@ class HomeAdapter(private val listOfDocuments: List<DocumentSnapshot>,private va
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val documentName = listOfDocuments[position].id
         try {
-            binding.textGossipInitiator.text = listOfDocuments[position].getString("Gossip")
-            binding.dateOfGossip.text = listOfDocuments[position].getString("Time")
+            binding.textGossipInitiator.text = listOfDocuments[position].getString("gossip")
+            binding.dateOfGossip.text = listOfDocuments[position].getString("time")
         }catch (e: Exception){
             Log.d(TAG, "onBindViewHolder: $e")
         }

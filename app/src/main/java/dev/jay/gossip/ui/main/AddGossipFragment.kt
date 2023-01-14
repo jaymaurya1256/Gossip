@@ -15,6 +15,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentAddGossipBinding
 import dev.jay.gossip.databinding.ListItemGossipBinding
+import dev.jay.gossip.documents.Gossip
+import dev.jay.gossip.documents.Message
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
@@ -49,11 +51,11 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                 val time = SimpleDateFormat("hh:mm a dd-MM-yyyy", Locale.getDefault())
                     .format(myCalender.timeInMillis)
                     .toString()
-                val gossip = hashMapOf(
-                    "Creator Name" to "Name from user collection",
-                    "Gossip" to binding.addGossip.editText?.text.toString(),
-                    "Tags" to listOf("Android, Dev"),
-                    "Time" to time.toString()
+                val gossip = Gossip(
+                    creatorName = "Name from user collection",
+                    gossip = binding.addGossip.editText?.text.toString(),
+                    tags =  listOf("Android, Dev"),
+                    time = time
                 )
                 fireStoreDatabase.collection("gossip")
                     .add(gossip)

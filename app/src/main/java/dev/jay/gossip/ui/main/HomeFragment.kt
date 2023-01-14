@@ -60,8 +60,9 @@ class HomeFragment() : Fragment() {
         //Fetch content and provide it to the Recycler View Adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         sharedViewModel.reFetchAllGossip.value = true
-        sharedViewModel.reFetchAllGossip.observe(viewLifecycleOwner) {
-            if (it == true){
+        sharedViewModel.reFetchAllGossip.observe(viewLifecycleOwner) { reFetch ->
+            if (reFetch == true){
+                Log.d(TAG, "onViewCreated: Refetch triggered")
                 fireStoreDatabase.collection("gossip").get()
                     .addOnSuccessListener { result ->
                         binding.recyclerView.adapter = HomeAdapter(result.documents){ documentName ->

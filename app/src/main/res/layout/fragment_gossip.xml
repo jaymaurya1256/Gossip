@@ -20,7 +20,7 @@
     <ScrollView
         android:id="@+id/gossip_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:maxHeight="400dp"
         android:layout_margin="16dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,13 +30,14 @@
             android:id="@+id/gossip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="24sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logo"
             app:layout_constraintEnd_toEndOf="parent"/>
     </ScrollView>
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"

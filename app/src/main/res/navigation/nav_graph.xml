@@ -28,32 +28,21 @@
         <action
             android:id="@+id/action_gossipFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-        <action
-            android:id="@+id/action_gossipFragment_to_replyFragment"
-            app:destination="@id/replyFragment" />
         <argument
             android:name="documentName"
             app:argType="string" />
+        <action
+            android:id="@+id/action_gossipFragment_to_messageFragment"
+            app:destination="@id/messageFragment" />
     </fragment>
     <dialog
         android:id="@+id/addGossipFragment"
         android:name="dev.jay.gossip.ui.main.AddGossipFragment"
         android:label="fragment_reply"
-        tools:layout="@layout/fragment_reply" >
+        tools:layout="@layout/fragment_message1" >
         <action
             android:id="@+id/action_addGossipFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
-    </dialog>
-    <dialog
-        android:id="@+id/replyFragment"
-        android:name="dev.jay.gossip.ui.main.ReplyFragment"
-        android:label="ReplyFragment" >
-        <action
-            android:id="@+id/action_replyFragment_to_gossipFragment"
-            app:destination="@id/gossipFragment" />
-        <argument
-            android:name="documentName"
-            app:argType="string" />
     </dialog>
     <fragment
         android:id="@+id/userFragment"
@@ -64,4 +53,15 @@
             android:id="@+id/action_userFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/messageFragment"
+        android:name="dev.jay.gossip.ui.main.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" >
+        <action
+            android:id="@+id/action_messageFragment_to_gossipFragment"
+            app:destination="@id/gossipFragment" />
+        <argument android:name="documentName"
+            app:argType="string" />
+    </dialog>
 </navigation>

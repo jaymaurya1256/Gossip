@@ -4,26 +4,20 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.registerForActivityResult
-import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.ui.signup.SignupActivity
-import kotlin.system.exitProcess
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -36,8 +30,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        val sharedPreference =  getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
-        (binding.navDrawerHomeFragment.getHeaderView(R.id.profile_image) as ImageView).setImageURI(sharedPreference?.toUri())
 
 
         // Check if user is logged in or not
@@ -47,13 +39,15 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
         //Create Drawer layout
         val drawerLayout: DrawerLayout = binding.drawerLayout
         val navView = binding.navDrawerHomeFragment
         toggle = ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
+
+        //Bind Nav Drawer Views with shared preferences data
+        bindNavDrawer()
 
         //Implement all the menu item in nav drawer
         navView.setNavigationItemSelectedListener {
@@ -69,6 +63,19 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    private fun bindNavDrawer() {
+        val profileImage = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
+        val name = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
+        val email = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Email","")
+        val navDrawerHeader = (binding.navDrawerHomeFragment.getHeaderView(0))
+        val profileImageNavDrawer = navDrawerHeader.findViewById<ImageView>(R.id.profile_image)
+        val nameNavDrawer = navDrawerHeader.findViewById<TextView>(R.id.name)
+        val emailNavHeader = navDrawerHeader.findViewById<TextView>(R.id.email)
+        profileImageNavDrawer.setImageURI(profileImage?.toUri())
+        nameNavDrawer.text = name
+        emailNavHeader.text = email
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

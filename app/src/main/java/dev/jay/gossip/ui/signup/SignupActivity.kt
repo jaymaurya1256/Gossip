@@ -12,7 +12,5 @@ class SignupActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivitySignupBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
     }
 }

@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -28,11 +29,14 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "RegisterFragment"
+private const val IMAGE_REQUEST_CODE = 1
+
 @AndroidEntryPoint
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: SignupViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +54,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        //Signup with info provided
         binding.signUp.setOnClickListener{
             val name = binding.fullName.editText?.text.toString()
             val email = binding.email.editText?.text.toString()
@@ -72,6 +77,8 @@ class RegisterFragment : Fragment() {
                         putString("Phone", viewModel.phoneNumber)
                         putString("Bio", viewModel.bio)
                         putString("Country", viewModel.country)
+                        putString("DOB", viewModel.dateOfBirth)
+                        putString("ProfileImage", viewModel.selectedProfileImage)
                         val intent = Intent(requireActivity(), MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
@@ -84,10 +91,13 @@ class RegisterFragment : Fragment() {
             }
         }
 
+        //Back button listener
         binding.back.setOnClickListener {
             AuthUI.getInstance().signOut(requireContext())
             findNavController().navigate(R.id.action_registerFragment_to_signupFragment)
         }
+
+        //Select date of birth
         binding.dataOfBirth.setOnClickListener {
             val myCalender = Calendar.getInstance()
             val datePickerListener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
@@ -106,6 +116,25 @@ class RegisterFragment : Fragment() {
                 myCalender.get(Calendar.MONTH),
                 myCalender.get(Calendar.DAY_OF_MONTH)
             ).show()
+        }
+
+        //Select profile image
+        binding.changeProfileImage.setOnClickListener {
+            val intent  = Intent()
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.type = "image/*"
+            startActivityForResult(intent,IMAGE_REQUEST_CODE)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == IMAGE_REQUEST_CODE ) {
+            if (data != null) {
+                viewModel.selectedProfileImage = data.data.toString()
+                Log.d(TAG, "onActivityResult: ${data.data.toString()}")
+                binding.profileImage.setImageURI(data.data!!)
+            }
         }
     }
 }

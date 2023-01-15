@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.signup
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,4 +16,5 @@ class SignupViewModel @Inject constructor(
     var dateOfBirth = ""
     var bio = ""
     var country = ""
+    var selectedProfileImage = ""
 }

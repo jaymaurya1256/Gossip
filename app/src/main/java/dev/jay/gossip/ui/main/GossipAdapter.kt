@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.main
 
+import android.graphics.Color
 import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,7 +15,7 @@ import dev.jay.gossip.databinding.ListItemMessageBinding
 import org.w3c.dom.Text
 
 private const val TAG = "GossipAdapter"
-class GossipAdapter(val listOfDocument: List<DocumentSnapshot>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class GossipAdapter(private val listOfDocuments: List<DocumentSnapshot>): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private lateinit var binding: ListItemMessageBinding
     private lateinit var auth: FirebaseAuth
 
@@ -22,26 +23,25 @@ class GossipAdapter(val listOfDocument: List<DocumentSnapshot>): RecyclerView.Ad
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_message, parent, false)
         binding = ListItemMessageBinding.inflate(LayoutInflater.from(parent.context))
         auth = FirebaseAuth.getInstance()
         return GossipViewHolder(binding.root)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (listOfDocument[position].getString("uid") == auth.uid.toString()){
-            binding.myMessage.text = listOfDocument[position].getString("message")
+        if (listOfDocuments[position].getString("uid") == auth.uid.toString()){
+            binding.myMessage.text = listOfDocuments[position].getString("message")
             Log.d(TAG, "onBindViewHolder: myMessage triggered")
             //binding.message.textAlignment = View.TEXT_ALIGNMENT_TEXT_END
         } else {
-            binding.otherMessage.text = listOfDocument[position].getString("message")
+            binding.otherMessage.text = listOfDocuments[position].getString("message")
         }
-        Log.d(TAG, "onBindViewHolder: ${listOfDocument[position].getString("uid")}")
+        Log.d(TAG, "onBindViewHolder: ${listOfDocuments[position].getString("uid")}")
         Log.d(TAG, "onBindViewHolder: ${auth.uid}")
-        Log.d(TAG, "onBindViewHolder: ${listOfDocument[position].getString("message")}")
+        Log.d(TAG, "onBindViewHolder: ${listOfDocuments[position].getString("message")}")
     }
 
     override fun getItemCount(): Int {
-        return listOfDocument.size
+        return listOfDocuments.size
     }
 }

@@ -21,9 +21,11 @@ import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
+import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentRegisterBinding
+import dev.jay.gossip.documents.User
 import dev.jay.gossip.ui.main.activity.MainActivity
 import java.io.File
 import java.io.FileDescriptor
@@ -41,6 +43,7 @@ class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: SignupViewModel by activityViewModels()
     private lateinit var auth: FirebaseAuth
+    private lateinit var fireStoreDatabase : FirebaseFirestore
 
     private val pickImage = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         if (it != null) {
@@ -58,6 +61,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        fireStoreDatabase = FirebaseFirestore.getInstance()
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
@@ -65,6 +69,12 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        // Check if user is signed in or not
+        if (null == auth.currentUser){
+            val intent = Intent(requireActivity(), SignupActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
         //Signup with info provided
         binding.signUp.setOnClickListener {
             val name = binding.fullName.editText?.text.toString()
@@ -102,6 +112,25 @@ class RegisterFragment : Fragment() {
 
                         putString("ProfileImage", storedUri.toString())
 
+                        //Save info in firebase Database
+                        val user = User(
+                            name = viewModel.name,
+                            email = viewModel.email,
+                            phone = viewModel.phoneNumber,
+                            bio = viewModel.bio,
+                            country = viewModel.country,
+                            dateOfBirth = viewModel.dateOfBirth,
+                            profile = viewModel.selectedProfileImage,
+                            uid = auth.currentUser!!.uid
+                        )
+                        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid).set(user)
+                            .addOnSuccessListener {
+                                Snackbar.make(binding.root,"Data saved to firebase", Snackbar.LENGTH_SHORT).show()
+                            }
+                            .addOnFailureListener {
+                                Log.d(TAG, "onViewCreated: $it")
+                            }
+
                         val intent = Intent(requireActivity(), MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                         startActivity(intent)
@@ -133,13 +162,16 @@ class RegisterFragment : Fragment() {
                             .toString()
                     binding.dataOfBirth.text = viewModel.dateOfBirth
                 }
-            DatePickerDialog(
+            val datePicker = DatePickerDialog(
                 requireContext(),
                 datePickerListener,
                 myCalender.get(Calendar.YEAR),
                 myCalender.get(Calendar.MONTH),
                 myCalender.get(Calendar.DAY_OF_MONTH)
-            ).show()
+            )
+            datePicker.datePicker.maxDate = Calendar.getInstance().timeInMillis
+            datePicker.show()
+
         }
 
         //Select profile image

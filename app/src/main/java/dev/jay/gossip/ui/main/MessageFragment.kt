@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentMessageBinding
@@ -40,13 +41,20 @@ class MessageFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        var userName: String = ""
 
+        fireStoreDatabase.collection("user").document(firebaseAuth.currentUser!!.uid).get()
+            .addOnSuccessListener {
+                Log.d(TAG, "onViewCreated: $userName")
+                userName = it.getString("name").toString()
+                Log.d(TAG, "onViewCreated: $userName")
+            }
         binding.send.setOnClickListener {
             if (binding.reply.editText?.text?.isNotBlank() == true){
                 try {
                     val reply = Message(
                         binding.reply.editText!!.text.toString(),
-                        "Will be accessed through user collection",
+                        userName,
                         firebaseAuth.uid!!
                     )
                     fireStoreDatabase.collection("gossip")

@@ -36,6 +36,7 @@ class GossipFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentGossipBinding.inflate(layoutInflater)
+
         // Inflate the layout for this fragment
         return binding.root
     }
@@ -47,7 +48,7 @@ class GossipFragment : Fragment() {
 
         sharedViewModel.reFetchAllMessage.observe(viewLifecycleOwner) { reFetch ->
             if (reFetch == true){
-                Log.d(TAG, "onViewCreated: refeatch triggered")
+                Log.d(TAG, "onViewCreated: re-fetch triggered")
                 fireStoreDatabase.collection("gossip").document(args.documentName)
                     .collection("messages").get()
                     .addOnSuccessListener { result ->
@@ -71,8 +72,12 @@ class GossipFragment : Fragment() {
             }
 
         binding.addReply.setOnClickListener {
-            val action = GossipFragmentDirections.actionGossipFragmentToMessageFragment(args.documentName)
-            findNavController().navigate(action)
+            try {
+                val action = GossipFragmentDirections.actionGossipFragmentToMessageFragment(args.documentName)
+                findNavController().navigate(action)
+            }catch (e: java.lang.Exception){
+                Log.d(TAG, "onViewCreated: $e")
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
@@ -12,17 +13,23 @@ import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.ui.signup.SignupActivity
 
+private const val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var firebaseDatabase: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
 
 //    private val viewModel : MainViewModel by viewModels()
 
@@ -30,6 +37,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        firebaseDatabase = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
 
 
         // Check if user is logged in or not
@@ -37,6 +46,12 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, SignupActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
+        }
+
+        // Check if the user is registered or not
+        val isUserRegistered = firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
+        isUserRegistered.addOnFailureListener {
+            Log.d(TAG, "onCreate: Error occurred $it")
         }
 
         //Create Drawer layout

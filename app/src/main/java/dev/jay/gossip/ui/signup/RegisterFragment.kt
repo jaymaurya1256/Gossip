@@ -56,12 +56,12 @@ class RegisterFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
+        fireStoreDatabase = FirebaseFirestore.getInstance()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        fireStoreDatabase = FirebaseFirestore.getInstance()
         // Inflate the layout for this fragment
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
@@ -70,11 +70,20 @@ class RegisterFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Check if user is signed in or not
-        if (null == auth.currentUser){
+        if (auth.currentUser == null) {
             val intent = Intent(requireActivity(), SignupActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             startActivity(intent)
         }
+
+        // Check if the user is registered or not
+        val isUserRegistered = fireStoreDatabase.collection("users").document(auth.currentUser!!.uid).get()
+        isUserRegistered.addOnSuccessListener {
+            val intent = Intent(requireActivity(), MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
+        }
+
         //Signup with info provided
         binding.signUp.setOnClickListener {
             val name = binding.fullName.editText?.text.toString()
@@ -171,7 +180,6 @@ class RegisterFragment : Fragment() {
             )
             datePicker.datePicker.maxDate = Calendar.getInstance().timeInMillis
             datePicker.show()
-
         }
 
         //Select profile image

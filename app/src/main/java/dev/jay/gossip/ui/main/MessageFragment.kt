@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -43,11 +44,12 @@ class MessageFragment : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         var userName: String = ""
 
-        fireStoreDatabase.collection("user").document(firebaseAuth.currentUser!!.uid).get()
-            .addOnSuccessListener {
-                Log.d(TAG, "onViewCreated: $userName")
-                userName = it.getString("name").toString()
-                Log.d(TAG, "onViewCreated: $userName")
+        userName += requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
+        fireStoreDatabase.collection("users").document(firebaseAuth.currentUser!!.uid).get()
+            .addOnSuccessListener {result ->
+                Log.d(TAG, "onViewCreated: 1 $userName")
+                userName = result.getString("name").toString()
+                Log.d(TAG, "onViewCreated: 2 $userName")
             }
         binding.send.setOnClickListener {
             if (binding.reply.editText?.text?.isNotBlank() == true){

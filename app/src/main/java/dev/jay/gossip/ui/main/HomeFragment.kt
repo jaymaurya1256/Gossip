@@ -73,7 +73,7 @@ class HomeFragment() : Fragment() {
         sharedViewModel.reFetchAllGossip.value = true
         sharedViewModel.reFetchAllGossip.observe(viewLifecycleOwner) { reFetch ->
             if (reFetch == true){
-                Log.d(TAG, "onViewCreated: Refetch triggered")
+                Log.d(TAG, "onViewCreated: Ref-etch triggered")
                 fireStoreDatabase.collection("gossip").get()
                     .addOnSuccessListener { result ->
                         binding.recyclerView.adapter = HomeAdapter(result.documents){ documentName ->

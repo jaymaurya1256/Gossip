@@ -76,13 +76,45 @@ class RegisterFragment : Fragment() {
             startActivity(intent)
         }
 
-        // Check if the user is registered or not
-        val isUserRegistered = fireStoreDatabase.collection("users").document(auth.currentUser!!.uid).get()
-        isUserRegistered.addOnSuccessListener {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
-        }
+        // Check if the user is previously registered or not
+        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
+            .get().addOnSuccessListener {
+                if (it.getString("name") != null) {
+                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
+                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
+                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
+                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
+                    Log.d(TAG, "onViewCreated: ${it.getString("name")}")
+
+                    try {
+                        //Try to store the Preferences according to the Fire Store database
+                        val preference =
+                            requireActivity().getSharedPreferences(
+                                "userDetails",
+                                Context.MODE_PRIVATE
+                            )
+                        val editor = preference.edit()
+                        editor.apply {
+                            putString("Name", it.getString("name"))
+                            putString("Email", it.getString("email"))
+                            putString("Phone", it.getString("phone"))
+                            putString("Bio", it.getString("bio"))
+                            putString("Country", it.getString("country"))
+                            putString("DOB", it.getString("dateOfBirth"))
+                            putString("ProfileImage", it.getString("profile"))
+
+
+                            //Take user to Main Activity
+                            val intent = Intent(requireActivity(), MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            startActivity(intent)
+                        }.apply()
+                    }catch (e: Exception){
+                        Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
+                    }
+                }
+            }
+
 
         //Signup with info provided
         binding.signUp.setOnClickListener {
@@ -100,7 +132,10 @@ class RegisterFragment : Fragment() {
                 viewModel.country = country
                 try {
                     val sharedPreference =
-                        requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE)
+                        requireActivity().getSharedPreferences(
+                            "userDetails",
+                            Context.MODE_PRIVATE
+                        )
                     val editor = sharedPreference.edit()
                     editor.apply {
                         putString("Name", viewModel.name)
@@ -129,12 +164,17 @@ class RegisterFragment : Fragment() {
                             bio = viewModel.bio,
                             country = viewModel.country,
                             dateOfBirth = viewModel.dateOfBirth,
-                            profile = viewModel.selectedProfileImage,
+                            profile = storedUri.toString(),
                             uid = auth.currentUser!!.uid
                         )
-                        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid).set(user)
+                        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
+                            .set(user)
                             .addOnSuccessListener {
-                                Snackbar.make(binding.root,"Data saved to firebase", Snackbar.LENGTH_SHORT).show()
+                                Snackbar.make(
+                                    binding.root,
+                                    "Data saved to firebase",
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             }
                             .addOnFailureListener {
                                 Log.d(TAG, "onViewCreated: $it")
@@ -167,7 +207,10 @@ class RegisterFragment : Fragment() {
                     myCalender.set(Calendar.MONTH, month)
                     myCalender.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                     viewModel.dateOfBirth =
-                        SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(myCalender.time)
+                        SimpleDateFormat(
+                            "dd-MM-yyyy",
+                            Locale.getDefault()
+                        ).format(myCalender.time)
                             .toString()
                     binding.dataOfBirth.text = viewModel.dateOfBirth
                 }
@@ -187,7 +230,6 @@ class RegisterFragment : Fragment() {
             pickImage.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
-
     private fun copyUri(context: Context, pathFrom: Uri, pathTo: Uri?) {
         context.contentResolver.openInputStream(pathFrom).use { inputStream: InputStream? ->
             if (pathTo == null || inputStream == null) return

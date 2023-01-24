@@ -40,6 +40,10 @@ class MainActivity : AppCompatActivity() {
         firebaseDatabase = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
 
+        Log.d(
+            TAG,
+            "onCreate: ${this.getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","Not Found")}"
+        )
 
         // Check if user is logged in or not
         if (Firebase.auth.currentUser == null) {
@@ -49,9 +53,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // Check if the user is registered or not
-        val isUserRegistered = firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
-        isUserRegistered.addOnFailureListener {
+        firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
+        .addOnFailureListener {
             Log.d(TAG, "onCreate: Error occurred $it")
+            val intent = Intent(this, SignupActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            startActivity(intent)
         }
 
         //Create Drawer layout
@@ -70,6 +77,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.my_gossips -> {Snackbar.make(binding.root, "This feature is not implemented yet", Snackbar.LENGTH_SHORT).show() }
                 R.id.sign_out -> {
                     Firebase.auth.signOut()
+                    this.getSharedPreferences("userDetails", Context.MODE_PRIVATE).edit().clear().apply()
+                    Snackbar.make(binding.root,
+                        "Signed Out, Saved Preferences Cleared...",
+                        Snackbar.LENGTH_SHORT).show()
                     val intent = Intent(this, SignupActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)
@@ -82,6 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun bindNavDrawer() {
         val profileImage = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
+        Log.d(TAG, "bindNavDrawer: $profileImage")
         val name = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
         val email = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Email","")
         val navDrawerHeader = (binding.navDrawerHomeFragment.getHeaderView(0))

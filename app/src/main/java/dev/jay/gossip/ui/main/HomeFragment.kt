@@ -61,7 +61,7 @@ class HomeFragment() : Fragment() {
                     binding.profileImage.setImageURI(imageURI.toUri())
                 Log.d(TAG, "onViewCreated: Home fragment post setimage uri")
             }
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             Snackbar.make(binding.root, "No User data were found", Snackbar.LENGTH_SHORT).show()
             val intent = Intent(requireActivity(), SignupActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

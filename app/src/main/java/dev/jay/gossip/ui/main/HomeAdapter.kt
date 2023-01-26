@@ -4,13 +4,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.DocumentSnapshot
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ListItemGossipBinding
+import dev.jay.gossip.documents.Gossip
 
 private const val TAG = "HomeAdapter"
-class HomeAdapter(private val listOfDocuments: List<DocumentSnapshot>,private val onClick: (String) -> Unit): RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
+
+class GossipDiff : DiffUtil.ItemCallback<Gossip>() {
+    override fun areItemsTheSame(oldItem: Gossip, newItem: Gossip): Boolean {
+        return oldItem.gossipId == newItem.gossipId
+    }
+
+    override fun areContentsTheSame(oldItem: Gossip, newItem: Gossip): Boolean {
+        return oldItem == newItem
+    }
+}
+
+class HomeAdapter(
+    private val listOfDocuments: List<DocumentSnapshot>,
+    private val onClick: (String) -> Unit
+): ListAdapter<Gossip, HomeAdapter.HomeViewHolder>(GossipDiff()) {
     private lateinit var binding : ListItemGossipBinding
     class HomeViewHolder(view: View): RecyclerView.ViewHolder(view) {
     }
@@ -32,9 +49,5 @@ class HomeAdapter(private val listOfDocuments: List<DocumentSnapshot>,private va
         binding.root.setOnClickListener {
             onClick(documentName)
         }
-    }
-
-    override fun getItemCount(): Int {
-        return listOfDocuments.size
     }
 }

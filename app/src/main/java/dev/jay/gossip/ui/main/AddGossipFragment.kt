@@ -52,6 +52,8 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                     .format(myCalender.timeInMillis)
                     .toString()
                 val gossip = Gossip(
+                    gossipId = Calendar.getInstance().timeInMillis.toString(),
+                    creatorUid = auth.uid!!,
                     creatorName = "Name from user collection",
                     gossip = binding.addGossip.editText?.text.toString(),
                     tags =  listOf("Android, Dev"),

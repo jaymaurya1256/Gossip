@@ -3,7 +3,6 @@ package dev.jay.gossip.ui.main
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,11 +12,10 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentMessageBinding
 import dev.jay.gossip.documents.Message
+import dev.jay.gossip.ui.home.HomeViewModel
 
 private const val TAG = "MessageFragment"
 class MessageFragment : BottomSheetDialogFragment() {

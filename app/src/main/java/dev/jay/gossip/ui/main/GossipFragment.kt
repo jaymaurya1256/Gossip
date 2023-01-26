@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
-import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentGossipBinding
+import dev.jay.gossip.ui.home.HomeViewModel
 
 private const val TAG = "GossipFragment"
 @AndroidEntryPoint

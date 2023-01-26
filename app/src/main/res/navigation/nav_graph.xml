@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="dev.jay.gossip.ui.main.HomeFragment"
+        android:name="dev.jay.gossip.ui.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <dialog
         android:id="@+id/addGossipFragment"
-        android:name="dev.jay.gossip.ui.main.AddGossipFragment"
+        android:name="dev.jay.gossip.ui.add.AddGossipFragment"
         android:label="fragment_reply"
         tools:layout="@layout/fragment_message1" >
         <action

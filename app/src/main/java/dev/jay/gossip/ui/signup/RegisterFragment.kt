@@ -155,6 +155,8 @@ class RegisterFragment : Fragment() {
                         )
 
                         putString("ProfileImage", storedUri.toString())
+                        val test = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
+                        Log.d(TAG, "onViewCreated: $test")
 
                         //Save info in firebase Database
                         val user = User(

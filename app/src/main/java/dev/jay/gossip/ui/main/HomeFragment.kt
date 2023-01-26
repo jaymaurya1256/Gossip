@@ -56,10 +56,10 @@ class HomeFragment() : Fragment() {
             //Set profile image as provided in register fragment
             val imageURI = sharedPreferences.getString("ProfileImage", "")
             Log.d(TAG, "onViewCreated: $imageURI")
-            if (imageURI != null) {
-                if (imageURI.isNotBlank()) {
+            if (imageURI!!.isNotBlank()) {
+                Log.d(TAG, "onViewCreated: home fragment pre setimage uri")
                     binding.profileImage.setImageURI(imageURI.toUri())
-                }
+                Log.d(TAG, "onViewCreated: Home fragment post setimage uri")
             }
         }catch (e: Exception) {
             Snackbar.make(binding.root, "No User data were found", Snackbar.LENGTH_SHORT).show()

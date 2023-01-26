@@ -55,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         // Check if the user is registered or not
         firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
             .addOnSuccessListener {
-                if (it.getString("Name") == null) {
+                if (it.getString("name") == null) {
                     val intent = Intent(this, SignupActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                     startActivity(intent)

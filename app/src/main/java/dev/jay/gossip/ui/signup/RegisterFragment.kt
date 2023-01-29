@@ -22,6 +22,8 @@ import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentRegisterBinding
@@ -42,6 +44,8 @@ private const val TAG = "RegisterFragment"
 class RegisterFragment : Fragment() {
     private lateinit var binding: FragmentRegisterBinding
     private val viewModel: SignupViewModel by activityViewModels()
+    private lateinit var userProfileImageReference: StorageReference
+    private lateinit var storage: FirebaseStorage
     private lateinit var auth: FirebaseAuth
     private lateinit var fireStoreDatabase : FirebaseFirestore
 
@@ -57,12 +61,13 @@ class RegisterFragment : Fragment() {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
         fireStoreDatabase = FirebaseFirestore.getInstance()
+        storage = FirebaseStorage.getInstance()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
+        userProfileImageReference = storage.reference.child("UsersProfileImages")
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -80,12 +85,6 @@ class RegisterFragment : Fragment() {
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .get().addOnSuccessListener {
                 if (it.getString("name") != null) {
-                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
-                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
-                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
-                    Log.d(TAG, "onViewCreated: @@@@@@@@@@@@@@@@@@@@@@@@")
-                    Log.d(TAG, "onViewCreated: ${it.getString("name")}")
-
                     try {
                         //Try to store the Preferences according to the Fire Store database
                         val preference =
@@ -105,9 +104,7 @@ class RegisterFragment : Fragment() {
 
 
                             //Take user to Main Activity
-                            val intent = Intent(requireActivity(), MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                            startActivity(intent)
+                            goToMainActivity()
                         }.apply()
                     }catch (e: Exception){
                         Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
@@ -145,46 +142,25 @@ class RegisterFragment : Fragment() {
                         putString("Country", viewModel.country)
                         putString("DOB", viewModel.dateOfBirth)
 
-                        // Copy image to internal storage
+                        //Store Image to the data base
                         val storedUri = File(context?.filesDir, "profileImage").toUri()
-
-                        copyUri(
-                            requireContext(),
-                            viewModel.selectedProfileImage.toUri(),
-                            storedUri
-                        )
-
-                        putString("ProfileImage", storedUri.toString())
-                        val test = requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
-                        Log.d(TAG, "onViewCreated: $test")
-
-                        //Save info in firebase Database
-                        val user = User(
-                            name = viewModel.name,
-                            email = viewModel.email,
-                            phone = viewModel.phoneNumber,
-                            bio = viewModel.bio,
-                            country = viewModel.country,
-                            dateOfBirth = viewModel.dateOfBirth,
-                            profile = storedUri.toString(),
-                            uid = auth.currentUser!!.uid
-                        )
-                        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
-                            .set(user)
-                            .addOnSuccessListener {
-                                Snackbar.make(
-                                    binding.root,
-                                    "Data saved to firebase",
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
-                            }
-                            .addOnFailureListener {
-                                Log.d(TAG, "onViewCreated: $it")
+                        userProfileImageReference.putFile(storedUri)
+                            .addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    userProfileImageReference.downloadUrl
+                                        .addOnSuccessListener { uriOfImage ->
+                                            viewModel.selectedProfileImage = uriOfImage.toString()
+                                            putString("ProfileImage", viewModel.selectedProfileImage)
+                                            addUserInFireStore()
+                                        }
+                                        .addOnFailureListener {
+                                            Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
+                                        }
+                                } else {
+                                    Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
+                                }
                             }
 
-                        val intent = Intent(requireActivity(), MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                        startActivity(intent)
                     }.apply()
                 } catch (e: Exception) {
                     Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
@@ -245,5 +221,38 @@ class RegisterFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun goToMainActivity() {
+        val intent = Intent(requireActivity(), MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+    }
+    //Save user info in firebase Database
+    private fun addUserInFireStore() {
+        val user = User(
+            name = viewModel.name,
+            email = viewModel.email,
+            phone = viewModel.phoneNumber,
+            bio = viewModel.bio,
+            country = viewModel.country,
+            dateOfBirth = viewModel.dateOfBirth,
+            profile = viewModel.selectedProfileImage,
+            uid = auth.currentUser!!.uid
+        )
+        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
+            .set(user)
+            .addOnSuccessListener {
+                Snackbar.make(
+                    binding.root,
+                    "Data saved to firebase",
+                    Snackbar.LENGTH_SHORT
+                ).show()
+                // Take user to main activity
+                goToMainActivity()
+            }
+            .addOnFailureListener {
+                Log.d(TAG, "onViewCreated: $it")
+            }
     }
 }

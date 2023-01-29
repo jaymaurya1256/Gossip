@@ -47,22 +47,22 @@ class MainActivity : AppCompatActivity() {
 
         // Check if user is logged in or not
         if (Firebase.auth.currentUser == null) {
-            val intent = Intent(this, SignupActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            startActivity(intent)
+            gotoSignupActivity()
         }
 
         // Check if the user is registered or not
         firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
-            .addOnSuccessListener {
-                if (it.getString("name") == null) {
-                    val intent = Intent(this, SignupActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    if (it.result.getString("name") == null) {
+                        gotoSignupActivity()
+                    } else {
+                        Log.d(TAG, "onCreate: Task Successful")
+                    }
+                } else {
+                    gotoSignupActivity()
+                    Log.d(TAG, "onCreate: Task is Unsuccessful")
                 }
-            }
-            .addOnFailureListener {
-                Log.d(TAG, "onCreate: Error occurred $it")
             }
 
         //Create Drawer layout
@@ -116,5 +116,9 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
+    private fun gotoSignupActivity() {
+        val intent = Intent(this, SignupActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        startActivity(intent)
+    }
 }

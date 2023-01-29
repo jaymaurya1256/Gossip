@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,7 +24,7 @@ class GossipFragment : Fragment() {
     private val args by navArgs<GossipFragmentArgs>()
     private lateinit var fireStoreDatabase: FirebaseFirestore
     private lateinit var binding: FragmentGossipBinding
-    private val sharedViewModel: HomeViewModel by activityViewModels()
+    private val viewModel: GossipViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,40 +37,38 @@ class GossipFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentGossipBinding.inflate(layoutInflater)
-
-        // Inflate the layout for this fragment
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        sharedViewModel.reFetchAllMessage.value = true
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        sharedViewModel.reFetchAllMessage.observe(viewLifecycleOwner) { reFetch ->
-            if (reFetch == true){
-                Log.d(TAG, "onViewCreated: re-fetch triggered")
-                fireStoreDatabase.collection("gossip").document(args.documentName)
-                    .collection("messages").get()
-                    .addOnSuccessListener { result ->
-                        Log.d(TAG, "onViewCreated: ${result.documents}")
-                        binding.recyclerView.adapter = GossipAdapter(result.documents)
-                    }
-                    .addOnFailureListener {
-                        Snackbar.make(binding.root,"Failed to fetch data", Snackbar.LENGTH_SHORT).show()
-                    }
-                sharedViewModel.reFetchAllMessage.value = false
-            }
+        binding.progressBar.visibility = View.VISIBLE
+
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        val adapter = GossipAdapter()
+        binding.recyclerView.adapter = adapter
+        viewModel.getGossipContent(args.documentName)
+
+        viewModel.gossipTitle.observe(viewLifecycleOwner) {
+            binding.gossip.text = it
         }
 
-        fireStoreDatabase.collection("gossip").document(args.documentName)
-            .get()
-            .addOnSuccessListener {
-                binding.gossip.text = it.getString("gossip").toString()
+        viewModel.state.observe(viewLifecycleOwner) {
+            when(it) {
+                is GossipEvent.Success -> {
+                    binding.progressBar.visibility = View.GONE
+                    adapter.submitList(it.data)
+                }
+                is GossipEvent.Loading -> {
+                    binding.progressBar.visibility = View.VISIBLE
+                }
+                is GossipEvent.Error -> {
+                    binding.progressBar.visibility = View.GONE
+                    Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
+                }
             }
-            .addOnFailureListener {
-                Snackbar.make(binding.root,"Failed to fetch data", Snackbar.LENGTH_SHORT).show()
-            }
+        }
 
         binding.addReply.setOnClickListener {
             try {

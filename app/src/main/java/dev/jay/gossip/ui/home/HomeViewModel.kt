@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.home
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.firestore.ktx.firestore
@@ -9,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.jay.gossip.documents.Gossip
 import javax.inject.Inject
 
+private const val TAG = "HomeViewModel"
 sealed class HomeEvent {
     object Loading : HomeEvent()
     data class Success(val data: List<Gossip>) : HomeEvent()
@@ -17,8 +19,6 @@ sealed class HomeEvent {
 
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
-
-    val reFetchAllMessage = MutableLiveData<Boolean>(true) // Useless and stupid
 
     val state = MutableLiveData<HomeEvent>(HomeEvent.Loading)
 
@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor() : ViewModel() {
         state.value = HomeEvent.Loading
         Firebase
             .firestore
-            .collection("gossips")
+            .collection("gossip")
             .addSnapshotListener { value, error ->
                 if (error != null) {
                     state.value = HomeEvent.Error(error.message ?: "Unknown error")

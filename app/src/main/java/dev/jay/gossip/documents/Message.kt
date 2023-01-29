@@ -1,7 +1,9 @@
 package dev.jay.gossip.documents
 
 data class Message (
-    val Message: String,
-    val Name: String,
-    val Uid: String
-        )
+    val message: String = "",
+    val name: String = "",
+    val uid: String = ""
+    ) {
+    var id : String = ""
+}

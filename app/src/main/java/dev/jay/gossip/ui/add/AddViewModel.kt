@@ -35,7 +35,7 @@ class AddViewModel @Inject constructor() : ViewModel() {
 
         Firebase
             .firestore
-            .collection("gossips")
+            .collection("gossip")
             .add(data)
             .addOnSuccessListener {
                 state.value = AddGossipEvent.Success

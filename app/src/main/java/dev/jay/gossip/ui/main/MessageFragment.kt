@@ -24,7 +24,6 @@ class MessageFragment : BottomSheetDialogFragment() {
     private lateinit var fireStoreDatabase: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
     private val args by navArgs<MessageFragmentArgs>()
-    private val sharedViewModel: HomeViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -40,14 +39,12 @@ class MessageFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var userName: String = ""
+        var userName = ""
 
         userName += requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
         fireStoreDatabase.collection("users").document(firebaseAuth.currentUser!!.uid).get()
             .addOnSuccessListener {result ->
-                Log.d(TAG, "onViewCreated: 1 $userName")
                 userName = result.getString("name").toString()
-                Log.d(TAG, "onViewCreated: 2 $userName")
             }
         binding.send.setOnClickListener {
             if (binding.reply.editText?.text?.isNotBlank() == true){
@@ -61,7 +58,6 @@ class MessageFragment : BottomSheetDialogFragment() {
                         .document(args.documentName)
                         .collection("messages")
                         .add(reply)
-                    sharedViewModel.reFetchAllMessage.value = true
                     findNavController().popBackStack()
                 }catch (e: Exception) {
                     Log.d(TAG, "onViewCreated: $e")

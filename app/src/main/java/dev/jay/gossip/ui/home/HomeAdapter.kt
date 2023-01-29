@@ -1,6 +1,5 @@
 package dev.jay.gossip.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ListItemGossipBinding
 import dev.jay.gossip.documents.Gossip
+import java.text.SimpleDateFormat
 
 private const val TAG = "HomeAdapter"
 

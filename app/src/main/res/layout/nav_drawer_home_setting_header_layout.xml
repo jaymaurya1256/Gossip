@@ -21,6 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+
         <ImageView
             android:id="@+id/profile_image"
             android:layout_width="80dp"
@@ -28,6 +29,17 @@
             android:scaleType="centerCrop"
             app:srcCompat="@drawable/ic_baseline_account_circle_24" />
     </androidx.cardview.widget.CardView>
+
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@id/profile_image_card_view"
+        app:layout_constraintEnd_toEndOf="@id/profile_image_card_view"
+        app:layout_constraintStart_toStartOf="@id/profile_image_card_view"
+        app:layout_constraintTop_toTopOf="@id/profile_image_card_view"/>
 
 
     <TextView

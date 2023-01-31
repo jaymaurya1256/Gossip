@@ -35,6 +35,8 @@ class UserFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        binding.progressBar.visibility = View.VISIBLE
+
         viewModel.userName.observe(viewLifecycleOwner) {
             binding.name.text = it
         }
@@ -58,6 +60,7 @@ class UserFragment : Fragment() {
                 placeholder(R.drawable.ic_baseline_account_circle_24)
                 error(R.drawable.ic_baseline_account_circle_24)
             }
+            binding.progressBar.visibility = View.GONE
         }
     }
 }

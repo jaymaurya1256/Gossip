@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -81,8 +83,11 @@ class MainActivity : AppCompatActivity() {
     private fun bindNavDrawer() {
         val navDrawerHeader = (binding.navDrawerHomeFragment.getHeaderView(0))
         val profileImageNavDrawer = navDrawerHeader.findViewById<ImageView>(R.id.profile_image)
+        val progressBar = navDrawerHeader.findViewById<ProgressBar>(R.id.progress_bar)
         val nameNavDrawer = navDrawerHeader.findViewById<TextView>(R.id.name)
         val emailNavHeader = navDrawerHeader.findViewById<TextView>(R.id.email)
+
+        progressBar.visibility = View.VISIBLE
 
         viewModel.userName.observe(this) {
             nameNavDrawer.text = it
@@ -98,6 +103,7 @@ class MainActivity : AppCompatActivity() {
                 placeholder(R.drawable.ic_baseline_account_circle_24)
                 error(R.drawable.ic_baseline_account_circle_24)
             }
+            progressBar.visibility = View.GONE
         }
     }
 

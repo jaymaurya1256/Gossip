@@ -32,7 +32,6 @@ class MainViewModel @Inject constructor(
                 if (it.isSuccessful) {
                     if (it.result.getString("name") == null) {
                         goToSignup.tryEmit(true)
-                        Log.d(TAG, "onCreate: Task is Unsuccessful############################")
 
                     } else {
                         Log.d(TAG, "onCreate: Task Successful")
@@ -42,7 +41,6 @@ class MainViewModel @Inject constructor(
                     }
                 } else {
                     goToSignup.tryEmit(true)
-                    Log.d(TAG, "onCreate: Task is Unsuccessful@@@@@@@@@@@@@@@@@@@@@@@@@@")
                 }
             }
     }

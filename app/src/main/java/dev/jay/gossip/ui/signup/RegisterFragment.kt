@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        userProfileImageReference = storage.reference.child("UsersProfileImages")
+        userProfileImageReference = storage.reference.child("UsersProfileImages/ProfileImage")
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,26 +86,8 @@ class RegisterFragment : Fragment() {
             .get().addOnSuccessListener {
                 if (it.getString("name") != null) {
                     try {
-                        //Try to store the Preferences according to the Fire Store database
-                        val preference =
-                            requireActivity().getSharedPreferences(
-                                "userDetails",
-                                Context.MODE_PRIVATE
-                            )
-                        val editor = preference.edit()
-                        editor.apply {
-                            putString("Name", it.getString("name"))
-                            putString("Email", it.getString("email"))
-                            putString("Phone", it.getString("phone"))
-                            putString("Bio", it.getString("bio"))
-                            putString("Country", it.getString("country"))
-                            putString("DOB", it.getString("dateOfBirth"))
-                            putString("ProfileImage", it.getString("profile"))
-
-
                             //Take user to Main Activity
                             goToMainActivity()
-                        }.apply()
                     }catch (e: Exception){
                         Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
                     }
@@ -135,31 +117,26 @@ class RegisterFragment : Fragment() {
                         )
                     val editor = sharedPreference.edit()
                     editor.apply {
-                        putString("Name", viewModel.name)
-                        putString("Email", viewModel.email)
-                        putString("Phone", viewModel.phoneNumber)
-                        putString("Bio", viewModel.bio)
-                        putString("Country", viewModel.country)
-                        putString("DOB", viewModel.dateOfBirth)
-
-                        //Store Image to the data base
-                        val storedUri = File(context?.filesDir, "profileImage").toUri()
-                        userProfileImageReference.putFile(storedUri)
-                            .addOnCompleteListener {
-                                if (it.isSuccessful) {
-                                    userProfileImageReference.downloadUrl
-                                        .addOnSuccessListener { uriOfImage ->
-                                            viewModel.selectedProfileImage = uriOfImage.toString()
-                                            putString("ProfileImage", viewModel.selectedProfileImage)
-                                            addUserInFireStore()
-                                        }
-                                        .addOnFailureListener {
-                                            Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
-                                        }
-                                } else {
-                                    Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
+                        //Store Image to the data storage
+                        if (viewModel.selectedProfileImage.isNotEmpty()) {
+                            userProfileImageReference.putFile(viewModel.selectedProfileImage.toUri())
+                                .addOnCompleteListener {
+                                    if (it.isSuccessful) {
+                                        userProfileImageReference.downloadUrl
+                                            .addOnSuccessListener { uriOfImage ->
+                                                viewModel.selectedProfileImage = uriOfImage.toString()
+                                                addUserInFireStore()
+                                            }
+                                            .addOnFailureListener {
+                                                Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
+                                            }
+                                    } else {
+                                        Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
+                                    }
                                 }
-                            }
+                        } else {
+                            addUserInFireStore()
+                        }
 
                     }.apply()
                 } catch (e: Exception) {
@@ -208,26 +185,13 @@ class RegisterFragment : Fragment() {
             pickImage.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
-    private fun copyUri(context: Context, pathFrom: Uri, pathTo: Uri?) {
-        context.contentResolver.openInputStream(pathFrom).use { inputStream: InputStream? ->
-            if (pathTo == null || inputStream == null) return
-            context.contentResolver.openOutputStream(pathTo).use { out ->
-                if (out == null) return
-                // Transfer bytes from in to out
-                val buf = ByteArray(1024)
-                var len: Int
-                while (inputStream.read(buf).also { len = it } > 0) {
-                    out.write(buf, 0, len)
-                }
-            }
-        }
-    }
 
     private fun goToMainActivity() {
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
     }
+
     //Save user info in firebase Database
     private fun addUserInFireStore() {
         val user = User(

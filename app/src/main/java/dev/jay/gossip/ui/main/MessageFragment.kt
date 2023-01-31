@@ -12,17 +12,19 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dev.jay.gossip.databinding.FragmentMessageBinding
 import dev.jay.gossip.documents.Message
 import dev.jay.gossip.ui.home.HomeViewModel
+import java.util.Calendar
 
 private const val TAG = "MessageFragment"
 class MessageFragment : BottomSheetDialogFragment() {
 
     private lateinit var binding : FragmentMessageBinding
-    private lateinit var fireStoreDatabase: FirebaseFirestore
-    private lateinit var firebaseAuth: FirebaseAuth
     private val args by navArgs<MessageFragmentArgs>()
 
 
@@ -30,8 +32,6 @@ class MessageFragment : BottomSheetDialogFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        firebaseAuth = FirebaseAuth.getInstance()
-        fireStoreDatabase = FirebaseFirestore.getInstance()
         binding = FragmentMessageBinding.inflate(layoutInflater)
         // Inflate the layout for this fragment
         return binding.root
@@ -42,7 +42,7 @@ class MessageFragment : BottomSheetDialogFragment() {
         var userName = ""
 
         userName += requireActivity().getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
-        fireStoreDatabase.collection("users").document(firebaseAuth.currentUser!!.uid).get()
+        Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.uid).get()
             .addOnSuccessListener {result ->
                 userName = result.getString("name").toString()
             }
@@ -52,9 +52,10 @@ class MessageFragment : BottomSheetDialogFragment() {
                     val reply = Message(
                         binding.reply.editText!!.text.toString(),
                         userName,
-                        firebaseAuth.uid!!
+                        Firebase.auth.currentUser!!.uid,
+                        Calendar.getInstance().timeInMillis
                     )
-                    fireStoreDatabase.collection("gossip")
+                    Firebase.firestore.collection("gossip")
                         .document(args.documentName)
                         .collection("messages")
                         .add(reply)

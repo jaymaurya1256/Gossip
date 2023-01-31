@@ -3,6 +3,7 @@ package dev.jay.gossip.ui.home
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
@@ -20,12 +21,23 @@ sealed class HomeEvent {
 @HiltViewModel
 class HomeViewModel @Inject constructor() : ViewModel() {
 
+    val profileImage = MutableLiveData("")
     val state = MutableLiveData<HomeEvent>(HomeEvent.Loading)
 
     init {
         getGossips()
+        getProfileImage()
     }
 
+    private fun getProfileImage() {
+        Firebase.firestore.collection("users")
+            .document(Firebase.auth.currentUser!!.uid).get()
+            .addOnCompleteListener {
+            if (it.isSuccessful) {
+                profileImage.value = it.result.getString("profile")!!
+            }
+        }
+    }
     private fun getGossips() {
         state.value = HomeEvent.Loading
         Firebase

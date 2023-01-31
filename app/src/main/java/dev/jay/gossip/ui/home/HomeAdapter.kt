@@ -9,6 +9,7 @@ import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ListItemGossipBinding
 import dev.jay.gossip.documents.Gossip
 import java.text.SimpleDateFormat
+import java.util.*
 
 private const val TAG = "HomeAdapter"
 
@@ -38,7 +39,7 @@ class HomeAdapter(
         with (holder.binding) {
             textViewGossipTitle.text = gossip.gossip
             textViewGossipTags.text = gossip.tags.joinToString(", ")
-            textViewGossipTime.text = gossip.time.toString()
+            textViewGossipTime.text = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(gossip.time)
 
             root.setOnClickListener {
                 onClick(gossip.id)

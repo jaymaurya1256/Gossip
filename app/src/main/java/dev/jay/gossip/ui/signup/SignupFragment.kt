@@ -32,8 +32,6 @@ class SignupFragment : Fragment() {
     private lateinit var oneTapClient: SignInClient
     private lateinit var signInRequest: BeginSignInRequest
 
-    private val REQ_ONE_TAP = 2
-    private var showOneTapUI = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,9 +97,6 @@ class SignupFragment : Fragment() {
             // Successfully signed in
             findNavController().navigate(R.id.action_signupFragment_to_registerFragment)
         } else {
-            // Sign in failed. If response is null the user canceled the
-            // sign-in flow using the back button. Otherwise check
-            // response.getError().getErrorCode() and handle the error.
             if (response != null){
                 Log.d(TAG, "onSignInResult: ${response.error?.errorCode}")
                 Snackbar.make(binding.root, "Not able to sign in!...", Snackbar.LENGTH_SHORT).show()

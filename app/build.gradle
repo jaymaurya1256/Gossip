@@ -67,9 +67,13 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:31.1.1')
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+
     // google sign in
     implementation 'com.google.android.gms:play-services-auth:20.4.0'
     implementation 'com.firebaseui:firebase-ui-auth:7.2.0'
+
+    //coil
+    implementation "io.coil-kt:coil:2.2.2"
 
 
     //hilt

@@ -1,24 +1,18 @@
 package dev.jay.gossip.ui.main
 
-import android.graphics.Color
-import android.text.Layout
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ListItemMessageBinding
 import dev.jay.gossip.documents.Message
-import dev.jay.gossip.ui.home.HomeAdapter
-import org.w3c.dom.Text
+import java.text.SimpleDateFormat
+import java.util.*
 
 private const val TAG = "GossipAdapter"
 
@@ -53,11 +47,13 @@ class GossipAdapter(
             if (userUid == auth.uid.toString()) {
                 myMessageCardView.visibility = View.VISIBLE
                 myMessage.text = message.message
+                timeOfMyReply.text = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(message.time)
             } else {
                 otherMessageCardView.visibility = View.VISIBLE
                 userName.visibility = View.VISIBLE
                 userName.text = message.name
                 otherMessage.text = message.message
+                timeOfReply.text = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(message.time)
             }
         }
     }

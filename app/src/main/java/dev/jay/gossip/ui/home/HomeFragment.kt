@@ -1,18 +1,24 @@
 package dev.jay.gossip.ui.home
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentHomeBinding
 import dev.jay.gossip.ui.main.GossipAdapter
 
+private const val TAG = "HomeFragment"
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
@@ -29,6 +35,16 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel.profileImage.observe(viewLifecycleOwner) {
+            Log.d(TAG, "onViewCreatedinhomefragment: $it")
+            binding.profileImage.load(it) {
+                placeholder(R.drawable.ic_baseline_account_circle_24)
+                crossfade(true)
+                crossfade(1000)
+                error(R.drawable.ic_baseline_account_circle_24)
+            }
+        }
 
         val adapter = HomeAdapter {
             val directions = HomeFragmentDirections.actionHomeFragmentToGossipFragment(it)

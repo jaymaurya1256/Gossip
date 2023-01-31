@@ -8,62 +8,45 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.net.toUri
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import coil.load
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreException
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.ui.signup.SignupActivity
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 private const val TAG = "MainActivity"
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle : ActionBarDrawerToggle
-    private lateinit var firebaseDatabase: FirebaseFirestore
-    private lateinit var auth: FirebaseAuth
-
-//    private val viewModel : MainViewModel by viewModels()
+    private val viewModel : MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        firebaseDatabase = FirebaseFirestore.getInstance()
-        auth = FirebaseAuth.getInstance()
 
-        Log.d(
-            TAG,
-            "onCreate: ${this.getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","Not Found")}"
-        )
-
-        // Check if user is logged in or not
-        if (Firebase.auth.currentUser == null) {
-            gotoSignupActivity()
-        }
-
-        // Check if the user is registered or not
-        firebaseDatabase.collection("users").document(auth.currentUser!!.uid).get()
-            .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    if (it.result.getString("name") == null) {
-                        gotoSignupActivity()
-                    } else {
-                        Log.d(TAG, "onCreate: Task Successful")
-                    }
-                } else {
-                    gotoSignupActivity()
-                    Log.d(TAG, "onCreate: Task is Unsuccessful")
-                }
+        lifecycleScope.launch {
+            viewModel.goToSignup.collect {
+                gotoSignupActivity()
             }
+        }
+        viewModel.checkUserRegistered()
 
         //Create Drawer layout
         val drawerLayout: DrawerLayout = binding.drawerLayout
@@ -96,17 +79,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun bindNavDrawer() {
-        val profileImage = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("ProfileImage","")
-        Log.d(TAG, "bindNavDrawer: $profileImage")
-        val name = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Name","")
-        val email = getSharedPreferences("userDetails", Context.MODE_PRIVATE).getString("Email","")
         val navDrawerHeader = (binding.navDrawerHomeFragment.getHeaderView(0))
         val profileImageNavDrawer = navDrawerHeader.findViewById<ImageView>(R.id.profile_image)
         val nameNavDrawer = navDrawerHeader.findViewById<TextView>(R.id.name)
         val emailNavHeader = navDrawerHeader.findViewById<TextView>(R.id.email)
-        profileImageNavDrawer.setImageURI(profileImage?.toUri())
-        nameNavDrawer.text = name
-        emailNavHeader.text = email
+
+        viewModel.userName.observe(this) {
+            nameNavDrawer.text = it
+        }
+
+        viewModel.userEmail.observe(this) {
+            emailNavHeader.text = it
+        }
+
+        viewModel.userProfileImage.observe(this) {
+            profileImageNavDrawer.load(it.toUri()) {
+                Log.d(TAG, "bindNavDrawer:$it")
+                placeholder(R.drawable.ic_baseline_account_circle_24)
+                error(R.drawable.ic_baseline_account_circle_24)
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -120,5 +112,7 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, SignupActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
+        Firebase.auth.signOut()
+        this.getSharedPreferences("userDetails", Context.MODE_PRIVATE).edit().clear().apply()
     }
 }

@@ -1,4 +1,4 @@
-package dev.jay.gossip.ui.main
+package dev.jay.gossip.ui.gossip
 
 import android.content.Context
 import android.os.Bundle
@@ -6,19 +6,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import dev.jay.gossip.databinding.FragmentMessageBinding
 import dev.jay.gossip.documents.Message
-import dev.jay.gossip.ui.home.HomeViewModel
 import java.util.Calendar
 
 private const val TAG = "MessageFragment"

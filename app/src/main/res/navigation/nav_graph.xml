@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/gossipFragment"
-        android:name="dev.jay.gossip.ui.main.GossipFragment"
+        android:name="dev.jay.gossip.ui.gossip.GossipFragment"
         android:label="fragment_gossip"
         tools:layout="@layout/fragment_gossip" >
         <action
@@ -46,7 +46,7 @@
     </dialog>
     <fragment
         android:id="@+id/userFragment"
-        android:name="dev.jay.gossip.ui.main.UserFragment"
+        android:name="dev.jay.gossip.ui.user.UserFragment"
         android:label="fragment_user"
         tools:layout="@layout/fragment_user" >
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <dialog
         android:id="@+id/messageFragment"
-        android:name="dev.jay.gossip.ui.main.MessageFragment"
+        android:name="dev.jay.gossip.ui.gossip.MessageFragment"
         android:label="fragment_message"
         tools:layout="@layout/fragment_message" >
         <action

@@ -1,16 +1,12 @@
-package dev.jay.gossip.ui.main
+package dev.jay.gossip.ui.gossip
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dev.jay.gossip.documents.Gossip
 import dev.jay.gossip.documents.Message
-import dev.jay.gossip.ui.home.HomeEvent
 import javax.inject.Inject
 
 private const val TAG = "GossipViewModel"

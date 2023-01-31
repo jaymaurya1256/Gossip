@@ -1,4 +1,4 @@
-package dev.jay.gossip.ui.main
+package dev.jay.gossip.ui.gossip
 
 import android.view.LayoutInflater
 import android.view.View

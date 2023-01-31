@@ -1,13 +1,10 @@
 package dev.jay.gossip.ui.home
 
-import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -16,7 +13,6 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentHomeBinding
-import dev.jay.gossip.ui.main.GossipAdapter
 
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint

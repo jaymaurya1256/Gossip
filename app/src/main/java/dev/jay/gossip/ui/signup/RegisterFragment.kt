@@ -21,7 +21,10 @@ import androidx.navigation.fragment.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.*
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.hilt.android.AndroidEntryPoint
@@ -83,7 +86,7 @@ class RegisterFragment : Fragment() {
 
         // Check if the user is previously registered or not
         binding.progressBar.visibility = View.VISIBLE
-        fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
+        Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.uid)
             .get().addOnSuccessListener {
                 if (it.getString("name") != null) {
                     binding.progressBar.visibility = View.GONE
@@ -98,6 +101,7 @@ class RegisterFragment : Fragment() {
             .addOnFailureListener {
                 binding.progressBar.visibility = View.GONE
             }
+        binding.progressBar.visibility = View.GONE
 
 
         //Signup with info provided

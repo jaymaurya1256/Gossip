@@ -7,6 +7,7 @@
     android:layout_height="match_parent"
     android:id="@+id/drawer_layout"
     tools:context=".ui.main.activity.MainActivity">
+
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment_container"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -18,6 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nav_drawer_home_fragment"
         android:layout_width="wrap_content"

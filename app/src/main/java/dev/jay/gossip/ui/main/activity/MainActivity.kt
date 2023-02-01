@@ -66,9 +66,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.my_gossips -> {Snackbar.make(binding.root, "This feature is not implemented yet", Snackbar.LENGTH_SHORT).show() }
                 R.id.sign_out -> {
                     Firebase.auth.signOut()
-                    this.getSharedPreferences("userDetails", Context.MODE_PRIVATE).edit().clear().apply()
                     Snackbar.make(binding.root,
-                        "Signed Out, Saved Preferences Cleared...",
+                        "Signed Out",
                         Snackbar.LENGTH_SHORT).show()
                     val intent = Intent(this, SignupActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

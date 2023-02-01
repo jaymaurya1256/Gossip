@@ -27,8 +27,11 @@ class GossipViewModel @Inject constructor(): ViewModel() {
         state.value = GossipEvent.Loading
         Firebase
             .firestore
-            .collection("gossip").document(document)
-            .collection("messages").addSnapshotListener { value, error ->
+            .collection("gossip")
+            .document(document)
+            .collection("messages")
+            .orderBy("time")
+            .addSnapshotListener { value, error ->
                 if (error != null) {
                     state.value = GossipEvent.Error(error.message ?: "Unknown error")
                     return@addSnapshotListener

@@ -82,9 +82,11 @@ class RegisterFragment : Fragment() {
         }
 
         // Check if the user is previously registered or not
+        binding.progressBar.visibility = View.VISIBLE
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .get().addOnSuccessListener {
                 if (it.getString("name") != null) {
+                    binding.progressBar.visibility = View.GONE
                     try {
                         //Take user to Main Activity
                         goToMainActivity()
@@ -93,10 +95,16 @@ class RegisterFragment : Fragment() {
                     }
                 }
             }
+            .addOnFailureListener {
+                binding.progressBar.visibility = View.GONE
+            }
 
 
         //Signup with info provided
         binding.signUp.setOnClickListener {
+
+            binding.progressBar.visibility = View.VISIBLE
+
             val name = binding.fullName.editText?.text.toString()
             val email = binding.email.editText?.text.toString()
             val phone = binding.phone.editText?.text.toString()
@@ -110,9 +118,9 @@ class RegisterFragment : Fragment() {
                 viewModel.bio = bio
                 viewModel.country = country
                 try {
-                    //Store Image to the data storage
                     if (viewModel.selectedProfileImage.isNotEmpty()) {
-                        addUserInFireStore()
+                        //Store Image to the data storage
+                        addProfileImageToFireBaseStorage()
                     }
                 } catch (e: Exception) {
                     Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
@@ -161,10 +169,35 @@ class RegisterFragment : Fragment() {
         }
     }
 
+    //Go to main activity
     private fun goToMainActivity() {
         val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
+    }
+
+    //Save Profile Image to Database
+    private fun addProfileImageToFireBaseStorage() {
+        val myProfileImageReference = userProfileImageReference.storage.reference
+            .child("UserProfileImage/${auth.currentUser!!.uid}")
+        myProfileImageReference.putFile(viewModel.selectedProfileImage.toUri())
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    myProfileImageReference.downloadUrl
+                        .addOnSuccessListener { uriOfImage ->
+                            viewModel.selectedProfileImage = uriOfImage.toString()
+                            //Save user info in firebase Database
+                            addUserInFireStore()
+                        }
+                        .addOnFailureListener {
+                            Snackbar.make(
+                                binding.root,
+                                "Something went wrong...Please try again",
+                                Snackbar.LENGTH_SHORT
+                            ).show()
+                        }
+                }
+            }
     }
 
     //Save user info in firebase Database
@@ -182,23 +215,6 @@ class RegisterFragment : Fragment() {
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .set(user)
             .addOnSuccessListener {
-                val myProfileImageReference = userProfileImageReference.storage.reference.child("UserProfileImage/${auth.currentUser!!.uid}")
-                myProfileImageReference.putFile(viewModel.selectedProfileImage.toUri())
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            myProfileImageReference.downloadUrl
-                                .addOnSuccessListener { uriOfImage ->
-                                    viewModel.selectedProfileImage = uriOfImage.toString()
-                                }
-                                .addOnFailureListener {
-                                    Snackbar.make(
-                                        binding.root,
-                                        "Something went wrong...Please try again",
-                                        Snackbar.LENGTH_SHORT
-                                    ).show()
-                                }
-                        }
-                    }
                 // Take user to main activity
                 goToMainActivity()
             }

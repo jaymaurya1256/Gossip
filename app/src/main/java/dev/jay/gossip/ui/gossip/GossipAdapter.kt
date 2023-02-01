@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dev.jay.gossip.R
-import dev.jay.gossip.databinding.ListItemMessageBinding
+import dev.jay.gossip.databinding.ListItemOtherMessageBinding
+import dev.jay.gossip.databinding.ListItemSelfMessageBinding
 import dev.jay.gossip.documents.Message
-import java.text.SimpleDateFormat
-import java.util.*
+import dev.jay.gossip.toFormattedTime
 
 private const val TAG = "GossipAdapter"
 
@@ -25,36 +25,55 @@ class MessageDiff : DiffUtil.ItemCallback<Message>() {
         return oldItem == newItem
     }
 }
-class GossipAdapter(
-    )
-    : ListAdapter<Message, GossipAdapter.GossipViewHolder>(MessageDiff()) {
-    private lateinit var fireStoreDatabase: FirebaseFirestore
-    private lateinit var auth: FirebaseAuth
+class GossipAdapter : ListAdapter<Message, GossipAdapter.BaseViewHolder>(MessageDiff()) {
 
-    class GossipViewHolder(val binding: ListItemMessageBinding): RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GossipViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_message, parent, false)
-        auth = FirebaseAuth.getInstance()
-        fireStoreDatabase = FirebaseFirestore.getInstance()
-        return GossipViewHolder(ListItemMessageBinding.bind(view))
+    abstract class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        abstract fun bind(message: Message)
     }
 
-    override fun onBindViewHolder(holder: GossipViewHolder, position: Int) {
-        val message = getItem(position)
-        with(holder.binding) {
-            val userUid = message.uid
-            if (userUid == auth.uid.toString()) {
-                myMessageCardView.visibility = View.VISIBLE
-                myMessage.text = message.message
-                timeOfMyReply.text = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(message.time)
-            } else {
-                otherMessageCardView.visibility = View.VISIBLE
-                userName.visibility = View.VISIBLE
-                userName.text = message.name
-                otherMessage.text = message.message
-                timeOfReply.text = SimpleDateFormat("dd/MM/yyyy hh:mm a", Locale.getDefault()).format(message.time)
+    class OtherMessageViewHolder(private val binding: ListItemOtherMessageBinding) : BaseViewHolder(binding.root) {
+        override fun bind(message: Message) {
+            with(binding) {
+                textViewUsername.text = message.name
+                textViewMessage.text = message.message
+                textViewTime.text = message.time.toFormattedTime()
             }
         }
+    }
+
+    class SelfMessageViewHolder(private val binding: ListItemSelfMessageBinding) : BaseViewHolder(binding.root) {
+        override fun bind(message: Message) {
+            with(binding) {
+                textViewMessage.text = message.message
+                textViewTime.text = message.time.toFormattedTime()
+            }
+        }
+    }
+
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        return when (viewType) {
+            0 -> {
+                val binding = ListItemSelfMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                SelfMessageViewHolder(binding)
+            }
+
+            else -> {
+                val binding = ListItemOtherMessageBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                OtherMessageViewHolder(binding)
+            }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when(getItem(position).uid) {
+            Firebase.auth.currentUser?.uid -> 0
+            else -> 1
+        }
+    }
+
+    override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
+        val message = getItem(position)
+        holder.bind(message)
     }
 }

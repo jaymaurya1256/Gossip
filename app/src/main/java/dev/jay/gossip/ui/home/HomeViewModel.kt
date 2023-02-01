@@ -30,12 +30,20 @@ class HomeViewModel @Inject constructor() : ViewModel() {
     }
 
     private fun getProfileImage() {
-        Firebase.firestore.collection("users")
-            .document(Firebase.auth.currentUser!!.uid).get()
-            .addOnCompleteListener {
-            if (it.isSuccessful) {
-                profileImage.value = it.result.getString("profile")!!
-            }
+        try {
+            Firebase.firestore.collection("users")
+                .document(Firebase.auth.currentUser!!.uid).get()
+                .addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        try {
+                            profileImage.value = it.result.getString("profile")!!
+                        } catch (e: Exception) {
+                            Log.d(TAG, "getProfileImage: No Profile Image")
+                        }
+                    }
+                }
+        } catch (e: Exception) {
+            Log.d(TAG, "getProfileImage: User is not registered")
         }
     }
     private fun getGossips() {

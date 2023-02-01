@@ -67,7 +67,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        userProfileImageReference = storage.reference.child("UsersProfileImages/ProfileImage")
+        userProfileImageReference = storage.reference.child("UsersProfileImages")
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -86,8 +86,8 @@ class RegisterFragment : Fragment() {
             .get().addOnSuccessListener {
                 if (it.getString("name") != null) {
                     try {
-                            //Take user to Main Activity
-                            goToMainActivity()
+                        //Take user to Main Activity
+                        goToMainActivity()
                     }catch (e: Exception){
                         Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
                     }
@@ -110,35 +110,10 @@ class RegisterFragment : Fragment() {
                 viewModel.bio = bio
                 viewModel.country = country
                 try {
-                    val sharedPreference =
-                        requireActivity().getSharedPreferences(
-                            "userDetails",
-                            Context.MODE_PRIVATE
-                        )
-                    val editor = sharedPreference.edit()
-                    editor.apply {
-                        //Store Image to the data storage
-                        if (viewModel.selectedProfileImage.isNotEmpty()) {
-                            userProfileImageReference.putFile(viewModel.selectedProfileImage.toUri())
-                                .addOnCompleteListener {
-                                    if (it.isSuccessful) {
-                                        userProfileImageReference.downloadUrl
-                                            .addOnSuccessListener { uriOfImage ->
-                                                viewModel.selectedProfileImage = uriOfImage.toString()
-                                                addUserInFireStore()
-                                            }
-                                            .addOnFailureListener {
-                                                Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
-                                            }
-                                    } else {
-                                        Snackbar.make(binding.root, "Something went wrong...Please try again", Snackbar.LENGTH_SHORT).show()
-                                    }
-                                }
-                        } else {
-                            addUserInFireStore()
-                        }
-
-                    }.apply()
+                    //Store Image to the data storage
+                    if (viewModel.selectedProfileImage.isNotEmpty()) {
+                        addUserInFireStore()
+                    }
                 } catch (e: Exception) {
                     Snackbar.make(binding.root, "$e", Snackbar.LENGTH_SHORT).show()
                 }
@@ -207,16 +182,32 @@ class RegisterFragment : Fragment() {
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .set(user)
             .addOnSuccessListener {
-                Snackbar.make(
-                    binding.root,
-                    "Data saved to firebase",
-                    Snackbar.LENGTH_SHORT
-                ).show()
+                val myProfileImageReference = userProfileImageReference.storage.reference.child("UserProfileImage/${auth.currentUser!!.uid}")
+                myProfileImageReference.putFile(viewModel.selectedProfileImage.toUri())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            myProfileImageReference.downloadUrl
+                                .addOnSuccessListener { uriOfImage ->
+                                    viewModel.selectedProfileImage = uriOfImage.toString()
+                                }
+                                .addOnFailureListener {
+                                    Snackbar.make(
+                                        binding.root,
+                                        "Something went wrong...Please try again",
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
+                                }
+                        }
+                    }
                 // Take user to main activity
                 goToMainActivity()
             }
             .addOnFailureListener {
-                Log.d(TAG, "onViewCreated: $it")
+                Snackbar.make(
+                    binding.root,
+                    "Something went wrong",
+                    Snackbar.LENGTH_SHORT
+                ).show()
             }
     }
 }

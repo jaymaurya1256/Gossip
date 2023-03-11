@@ -14,6 +14,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.ktx.app
 import dagger.hilt.android.AndroidEntryPoint
+import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentAddGossipBinding
 import dev.jay.gossip.documents.Gossip
 import dev.jay.gossip.text
@@ -40,14 +41,19 @@ class AddGossipFragment : BottomSheetDialogFragment() {
             if (binding.addGossip.text.isEmpty()) {
                 binding.addGossip.error = "Please add a Gossip"
             } else {
-                binding.addGossip.error = null
 
-                viewModel.addGossip(
-                    Firebase.auth.currentUser!!.displayName.toString(),
-                    binding.addGossip.text,
-                    listOf("Android", "Kotlin", "Jetpack"),
-                    Calendar.getInstance().timeInMillis
-                )
+                binding.addGossip.error = null
+                try {
+                    viewModel.addGossip(
+                        Firebase.auth.currentUser!!.displayName.toString(),
+                        binding.addGossip.text,
+                        listOf("Android", "Kotlin", "Jetpack"),
+                        Calendar.getInstance().timeInMillis,
+                        Firebase.auth.currentUser!!.uid
+                    )
+                } catch (e: Exception) {
+                    Snackbar.make(binding.root, getString(R.string.something_went_wrong_gossip_not_added), Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
 

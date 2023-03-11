@@ -23,14 +23,16 @@ class AddViewModel @Inject constructor() : ViewModel() {
         creatorName: String,
         gossip: String,
         tags: List<String>,
-        time: Long
+        time: Long,
+        uid: String
     ) {
         state.value = AddGossipEvent.Loading
         val data = Gossip(
             creatorName = creatorName,
             gossip = gossip,
             tags = tags,
-            time = time
+            time = time,
+            uid = uid
         )
 
         Firebase

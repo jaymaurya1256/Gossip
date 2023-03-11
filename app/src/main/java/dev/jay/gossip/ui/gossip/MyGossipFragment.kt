@@ -5,12 +5,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import androidx.fragment.app.viewModels
+import com.google.android.material.snackbar.Snackbar
 import dev.jay.gossip.R
+import dev.jay.gossip.databinding.FragmentMyGossipBinding
+import dev.jay.gossip.ui.home.HomeEvent
+
 
 class MyGossipFragment : Fragment() {
-
+    private lateinit var binding: FragmentMyGossipBinding
+    private val viewModel: MyGossipViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -20,11 +24,24 @@ class MyGossipFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_gossip, container, false)
+        binding = FragmentMyGossipBinding.inflate(layoutInflater)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getMyGossip()
+        viewModel.state.observe(viewLifecycleOwner) {
+            when(it) {
+                HomeEvent.Loading -> { binding.progressBar.visibility = View.VISIBLE }
+                is HomeEvent.Error -> {
+                    Snackbar.make(binding.root, getString(R.string.error_loading_data), Snackbar.LENGTH_SHORT).show()
+                }
+                is HomeEvent.Success -> {
+                    binding.recyclerViewMyGossip.adapter = MyGossipAdapter(it.data)
+                }
+            }
+        }
     }
 }

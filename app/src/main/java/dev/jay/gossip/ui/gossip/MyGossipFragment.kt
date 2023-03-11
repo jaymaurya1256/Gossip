@@ -7,11 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.FragmentMyGossipBinding
 import dev.jay.gossip.ui.home.HomeEvent
 
 
+@AndroidEntryPoint
 class MyGossipFragment : Fragment() {
     private lateinit var binding: FragmentMyGossipBinding
     private val viewModel: MyGossipViewModel by viewModels()

@@ -63,7 +63,9 @@ class MainActivity : AppCompatActivity() {
         //Implement all the menu item in nav drawer
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
-                R.id.my_gossips -> {Snackbar.make(binding.root, "This feature is not implemented yet", Snackbar.LENGTH_SHORT).show() }
+                R.id.my_gossips -> {
+                    
+                }
                 R.id.sign_out -> {
                     Firebase.auth.signOut()
                     Snackbar.make(binding.root,

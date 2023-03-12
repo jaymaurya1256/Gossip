@@ -19,21 +19,13 @@
         <action
             android:id="@+id/action_homeFragment_to_userFragment"
             app:destination="@id/userFragment" />
-        <action
-            android:id="@+id/action_homeFragment_to_myGossipsFragment"
-            app:destination="@id/myGossipsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/myGossipsFragment"
         android:name="dev.jay.gossip.ui.gossip.MyGossipFragment"
         android:label="fragment_my_gossip"
-        tools:layout="@layout/fragment_my_gossip">
-        <action
-            android:id="@+id/action_myGossipsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-
-    </fragment>
+        tools:layout="@layout/fragment_my_gossip"/>
 
     <fragment
         android:id="@+id/gossipFragment"
@@ -78,5 +70,5 @@
             app:destination="@id/gossipFragment" />
         <argument android:name="documentName"
             app:argType="string" />
-    </dialog>
+    </dialog><action android:id="@+id/action_global_myGossipsFragment" app:destination="@id/myGossipsFragment"/>
 </navigation>

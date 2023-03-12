@@ -19,10 +19,12 @@ class MyGossipViewModel @Inject constructor(): ViewModel() {
 
 
     fun getMyGossip() {
+
+//        state.value = HomeEvent.Loading
+
         Firebase.firestore.collection("gossip").whereEqualTo("uid", Firebase.auth.currentUser?.uid)
             .addSnapshotListener{ value, error ->
 
-                state.value = HomeEvent.Loading
 
                 if (error != null) {
                     state.value = HomeEvent.Error(error.toString())

@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.my_gossips -> {
-                    
+                    findNavController(R.id.nav_host_fragment_container).navigate(R.id.action_global_myGossipsFragment)
                 }
                 R.id.sign_out -> {
                     Firebase.auth.signOut()

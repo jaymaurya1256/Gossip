@@ -46,8 +46,9 @@ class MyGossipFragment : Fragment() {
                     Snackbar.make(binding.root, getString(R.string.error_loading_data), Snackbar.LENGTH_SHORT).show()
                 }
                 is HomeEvent.Success -> {
+                    var data = it.data
                     binding.progressBar.visibility = View.GONE
-                    binding.recyclerViewMyGossip.adapter = MyGossipAdapter(it.data)
+                    binding.recyclerViewMyGossip.adapter = MyGossipAdapter(data)
                 }
             }
         }

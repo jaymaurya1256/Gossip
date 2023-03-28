@@ -70,5 +70,10 @@
             app:destination="@id/gossipFragment" />
         <argument android:name="documentName"
             app:argType="string" />
-    </dialog><action android:id="@+id/action_global_myGossipsFragment" app:destination="@id/myGossipsFragment"/>
+    </dialog>
+    <action
+        android:id="@+id/action_global_myGossipsFragment"
+        app:destination="@id/myGossipsFragment"
+        app:popUpTo="@id/homeFragment"
+        app:popUpToInclusive="false" />
 </navigation>

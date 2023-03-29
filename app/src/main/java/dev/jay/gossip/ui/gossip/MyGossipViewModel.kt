@@ -20,6 +20,7 @@ class MyGossipViewModel @Inject constructor(): ViewModel() {
 
     fun getMyGossip() {
 
+        gossips.clear()
         state.value = HomeEvent.Loading
 
         Firebase.firestore.collection("gossip").whereEqualTo("uid", Firebase.auth.currentUser?.uid)

@@ -25,7 +25,11 @@
         android:id="@+id/myGossipsFragment"
         android:name="dev.jay.gossip.ui.gossip.MyGossipFragment"
         android:label="fragment_my_gossip"
-        tools:layout="@layout/fragment_my_gossip"/>
+        tools:layout="@layout/fragment_my_gossip">
+        <action
+            android:id="@+id/action_myGossipsFragment_to_gossipFragment"
+            app:destination="@id/gossipFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/gossipFragment"
@@ -46,7 +50,7 @@
         android:id="@+id/addGossipFragment"
         android:name="dev.jay.gossip.ui.add.AddGossipFragment"
         android:label="fragment_reply"
-        tools:layout="@layout/fragment_message1" >
+        tools:layout="@layout/fragment_message" >
         <action
             android:id="@+id/action_addGossipFragment_to_homeFragment"
             app:destination="@id/homeFragment" />

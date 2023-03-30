@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
+import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -12,13 +14,16 @@ import coil.load
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
+import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.databinding.FragmentHomeBinding
+import dev.jay.gossip.ui.main.activity.MainActivity
 
 private const val TAG = "HomeFragment"
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
+
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -73,6 +78,15 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_userFragment)
         }
 
-        binding.setting.setOnClickListener { }
+        val drawerLayout = (activity as MainActivity).drawerLayout
+        binding.setting.setOnClickListener {
+            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.closeDrawer(GravityCompat.END)
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+        }
     }
 }

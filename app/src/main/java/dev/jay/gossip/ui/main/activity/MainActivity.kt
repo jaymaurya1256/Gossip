@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.main.activity
 
+
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,8 @@ private const val TAG = "MainActivity"
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var toggle : ActionBarDrawerToggle
+    lateinit var drawerLayout: DrawerLayout
+
     private val viewModel : MainViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +54,7 @@ class MainActivity : AppCompatActivity() {
         viewModel.checkUserRegistered()
 
         //Create Drawer layout
-        val drawerLayout: DrawerLayout = binding.drawerLayout
+        drawerLayout = binding.drawerLayout
         val navView = binding.navDrawerHomeFragment
         toggle = ActionBarDrawerToggle(this,drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
@@ -79,6 +82,8 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setHomeButtonEnabled(true)
     }
 
     private fun bindNavDrawer() {

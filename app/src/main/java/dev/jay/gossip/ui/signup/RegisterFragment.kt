@@ -216,6 +216,20 @@ class RegisterFragment : Fragment() {
             profile = viewModel.selectedProfileImage,
             uid = auth.currentUser!!.uid
         )
+
+        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString("name", user.name)
+            putString("email", user.email)
+            putString("phone", user.phone)
+            putString("bio", user.bio)
+            putString("country", user.country)
+            putString("dateOfBirth", user.dateOfBirth)
+            putString("profile", user.profile)
+            putString("uid", user.uid)
+            apply()
+        }
+
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .set(user)
             .addOnSuccessListener {

@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.add
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,7 +46,7 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                 binding.addGossip.error = null
                 try {
                     viewModel.addGossip(
-                        Firebase.auth.currentUser!!.displayName.toString(),
+                        requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "")!!,
                         binding.addGossip.text,
                         listOf("Android", "Kotlin", "Jetpack"),
                         Calendar.getInstance().timeInMillis,

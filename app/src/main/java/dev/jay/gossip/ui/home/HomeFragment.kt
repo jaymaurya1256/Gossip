@@ -5,7 +5,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.activity.addCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,7 +26,6 @@ private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
-
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -37,14 +39,23 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val myToolbar = view.findViewById<Toolbar>(R.id.my_toolbar)
+        (activity as AppCompatActivity).setSupportActionBar(myToolbar)
+
+
         viewModel.profileImage.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreatedinhomefragment: $it")
-            binding.profileImage.load(it) {
-                placeholder(R.drawable.ic_baseline_account_circle_24)
-                crossfade(true)
-                crossfade(1000)
-                error(R.drawable.ic_baseline_account_circle_24)
+
+            myToolbar.findViewById<ImageView>(R.id.profile_image).setOnClickListener {
+                // Handle click on Toolbar icon
             }
+
+//            binding.profileImage.load(it) {
+//                placeholder(R.drawable.ic_baseline_account_circle_24)
+//                crossfade(true)
+//                crossfade(1000)
+//                error(R.drawable.ic_baseline_account_circle_24)
+//            }
         }
 
         val adapter = HomeAdapter {
@@ -74,18 +85,18 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
         }
 
-        binding.profileImage.setOnClickListener {
-            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
-        }
+//        binding.profileImage.setOnClickListener {
+//            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
+//        }
 
         val drawerLayout = (activity as MainActivity).drawerLayout
-        binding.setting.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.openDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.closeDrawer(GravityCompat.END)
-            }
-        }
+//        binding.setting.setOnClickListener {
+//            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                drawerLayout.openDrawer(GravityCompat.START)
+//            } else {
+//                drawerLayout.closeDrawer(GravityCompat.END)
+//            }
+//        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
         }
     }

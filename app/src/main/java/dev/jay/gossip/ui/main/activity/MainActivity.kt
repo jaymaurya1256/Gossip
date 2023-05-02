@@ -16,6 +16,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.net.toUri
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
@@ -70,6 +71,9 @@ class MainActivity : AppCompatActivity() {
             when(it.itemId) {
                 R.id.my_gossips -> {
                     findNavController(R.id.nav_host_fragment_container).navigate(R.id.action_global_myGossipsFragment)
+                    if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                        drawerLayout.closeDrawer(GravityCompat.START)
+                    }
                 }
                 R.id.sign_out -> {
                     Firebase.auth.signOut()

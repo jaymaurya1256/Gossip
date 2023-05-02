@@ -42,10 +42,13 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val myToolbar = toolbarBinding.myToolbar
+        val drawerLayout = (activity as MainActivity).drawerLayout
+
         (activity as AppCompatActivity).setSupportActionBar(myToolbar)
 
         toolbarBinding.profileImage.setOnClickListener {
             // Handle click on Toolbar icon
+            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
         }
 
         viewModel.profileImage.observe(viewLifecycleOwner) {
@@ -87,18 +90,14 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
         }
 
-//        binding.profileImage.setOnClickListener {
-//            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
-//        }
 
-        val drawerLayout = (activity as MainActivity).drawerLayout
-//        binding.setting.setOnClickListener {
-//            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//                drawerLayout.openDrawer(GravityCompat.START)
-//            } else {
-//                drawerLayout.closeDrawer(GravityCompat.END)
-//            }
-//        }
+        toolbarBinding.settingToolbarMain.setOnClickListener {
+            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.openDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.closeDrawer(GravityCompat.END)
+            }
+        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
         }
     }

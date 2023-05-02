@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.jay.gossip.R
 import dev.jay.gossip.databinding.ActivityMainBinding
 import dev.jay.gossip.databinding.FragmentHomeBinding
+import dev.jay.gossip.databinding.ToolbarMainBinding
 import dev.jay.gossip.ui.main.activity.MainActivity
 
 private const val TAG = "HomeFragment"
@@ -26,6 +27,7 @@ private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
+    private lateinit var toolbarBinding : ToolbarMainBinding
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -33,35 +35,29 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        toolbarBinding = ToolbarMainBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val myToolbar = view.findViewById<Toolbar>(R.id.my_toolbar)
+        val myToolbar = toolbarBinding.myToolbar
         (activity as AppCompatActivity).setSupportActionBar(myToolbar)
 
+        toolbarBinding.profileImage.setOnClickListener {
+            // Handle click on Toolbar icon
+        }
 
         viewModel.profileImage.observe(viewLifecycleOwner) {
             Log.d(TAG, "onViewCreatedinhomefragment: $it")
 
-            myToolbar.findViewById<ImageView>(R.id.profile_image).setOnClickListener {
-                // Handle click on Toolbar icon
-            }
-            myToolbar.findViewById<ImageView>(R.id.profile_image).load(it) {
+            toolbarBinding.profileImage.load(it) {
                 placeholder(R.drawable.ic_baseline_account_circle_24)
                 crossfade(true)
                 crossfade(1000)
                 error(R.drawable.ic_baseline_account_circle_24)
             }
 
-//            binding.profileImage.load(it) {
-//                placeholder(R.drawable.ic_baseline_account_circle_24)
-//                crossfade(true)
-//                crossfade(1000)
-//                error(R.drawable.ic_baseline_account_circle_24)
-//            }
         }
 
         val adapter = HomeAdapter {

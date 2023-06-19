@@ -39,4 +39,5 @@
     <string name="unknown">Unknown</string>
     <string name="error_loading_data">Error in loding data! Please try again</string>
     <string name="something_went_wrong_gossip_not_added">Something went wrong! Gossip not added</string>
+    <string name="hide_tags">Hide Tags</string>
 </resources>

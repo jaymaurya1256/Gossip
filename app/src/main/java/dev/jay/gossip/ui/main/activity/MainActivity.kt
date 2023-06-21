@@ -82,15 +82,6 @@ class MainActivity : AppCompatActivity() {
             }
             true
         }
-
-        setSupportActionBar(binding.toolbar.root)
-        binding.toolbar.iconToolbarProfile.setOnClickListener {
-            Toast.makeText(this, "You clicked on profile!", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.toolbar.iconToolbarSettings.setOnClickListener {
-            Toast.makeText(this, "You clicked on settings!", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun bindNavDrawer() {

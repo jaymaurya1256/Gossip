@@ -49,7 +49,7 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                 binding.addGossip.error = null
                 try {
                     viewModel.addGossip(
-                        requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "")!!,
+                        requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "") ?: Firebase.auth.currentUser?.displayName ?: "",
                         binding.addGossip.text,
                         tags,
                         Calendar.getInstance().timeInMillis,
@@ -76,9 +76,11 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                     chip.isCheckable = true
                     chip.setOnCheckedChangeListener { _, isChecked ->
                         if (isChecked) {
-                            tags.plus(chip.text)
+                            tags.add(chip.text.toString())
+                            Log.d("Tag Added", "onViewCreated: $tags")
                         } else {
-                            tags.remove(chip.text)
+                            tags.remove(chip.text.toString())
+                            Log.d("Tag Removed", "onViewCreated: $tags")
                         }
                     }
                     binding.addTagChipGroup.addView(chip)

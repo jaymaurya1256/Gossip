@@ -9,9 +9,12 @@ import android.widget.ImageView
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.google.android.material.snackbar.Snackbar
@@ -27,7 +30,6 @@ private const val TAG = "HomeFragment"
 class HomeFragment : Fragment() {
 
     private lateinit var binding : FragmentHomeBinding
-    private lateinit var toolbarBinding : ToolbarMainBinding
     private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
@@ -35,38 +37,17 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        toolbarBinding = ToolbarMainBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        val myToolbar = toolbarBinding.myToolbar
-        val drawerLayout = (activity as MainActivity).drawerLayout
-
-//        (activity as AppCompatActivity).setSupportActionBar(myToolbar)
-
-//        toolbarBinding.profileImage.setOnClickListener {
-//             Handle click on Toolbar icon
-//            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
-//        }
-
-//        viewModel.profileImage.observe(viewLifecycleOwner) {
-//            Log.d(TAG, "onViewCreatedinhomefragment: $it")
-//
-//            toolbarBinding.profileImage.load(it) {
-//                placeholder(R.drawable.ic_baseline_account_circle_24)
-//                crossfade(true)
-//                crossfade(1000)
-//                error(R.drawable.ic_baseline_account_circle_24)
-//            }
-//
-//        }
 
         val adapter = HomeAdapter {
             val directions = HomeFragmentDirections.actionHomeFragmentToGossipFragment(it)
             findNavController().navigate(directions)
         }
+
 
         binding.listGossip.adapter = adapter
 
@@ -90,14 +71,18 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
         }
 
+        binding.toolbar.iconToolbarProfile.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
+        }
 
-//        toolbarBinding.settingToolbarMain.setOnClickListener {
-//            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-//                drawerLayout.openDrawer(GravityCompat.START)
-//            } else {
-//                drawerLayout.closeDrawer(GravityCompat.END)
-//            }
-//        }
+        binding.toolbar.iconToolbarSettings.setOnClickListener {
+            if (requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
+                requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
+            } else {
+                requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).openDrawer(GravityCompat.START)
+            }
+        }
+
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
         }
     }

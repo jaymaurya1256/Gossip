@@ -55,7 +55,7 @@ class RegisterFragment : Fragment() {
     private val pickImage = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         if (it != null) {
             viewModel.selectedProfileImage = it.toString()
-            binding.profileImage.setImageURI(it)
+//            binding.profileImage.setImageURI(it)
         }
     }
 

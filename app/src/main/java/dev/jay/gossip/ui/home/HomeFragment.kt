@@ -35,33 +35,33 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-        toolbarBinding = ToolbarMainBinding.inflate(layoutInflater)
+//        toolbarBinding = ToolbarMainBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val myToolbar = toolbarBinding.myToolbar
+//        val myToolbar = toolbarBinding.myToolbar
         val drawerLayout = (activity as MainActivity).drawerLayout
 
-        (activity as AppCompatActivity).setSupportActionBar(myToolbar)
+//        (activity as AppCompatActivity).setSupportActionBar(myToolbar)
 
-        toolbarBinding.profileImage.setOnClickListener {
-            // Handle click on Toolbar icon
-            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
-        }
+//        toolbarBinding.profileImage.setOnClickListener {
+//             Handle click on Toolbar icon
+//            findNavController().navigate(R.id.action_homeFragment_to_userFragment)
+//        }
 
-        viewModel.profileImage.observe(viewLifecycleOwner) {
-            Log.d(TAG, "onViewCreatedinhomefragment: $it")
-
-            toolbarBinding.profileImage.load(it) {
-                placeholder(R.drawable.ic_baseline_account_circle_24)
-                crossfade(true)
-                crossfade(1000)
-                error(R.drawable.ic_baseline_account_circle_24)
-            }
-
-        }
+//        viewModel.profileImage.observe(viewLifecycleOwner) {
+//            Log.d(TAG, "onViewCreatedinhomefragment: $it")
+//
+//            toolbarBinding.profileImage.load(it) {
+//                placeholder(R.drawable.ic_baseline_account_circle_24)
+//                crossfade(true)
+//                crossfade(1000)
+//                error(R.drawable.ic_baseline_account_circle_24)
+//            }
+//
+//        }
 
         val adapter = HomeAdapter {
             val directions = HomeFragmentDirections.actionHomeFragmentToGossipFragment(it)
@@ -91,13 +91,13 @@ class HomeFragment : Fragment() {
         }
 
 
-        toolbarBinding.settingToolbarMain.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                drawerLayout.openDrawer(GravityCompat.START)
-            } else {
-                drawerLayout.closeDrawer(GravityCompat.END)
-            }
-        }
+//        toolbarBinding.settingToolbarMain.setOnClickListener {
+//            if (!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+//                drawerLayout.openDrawer(GravityCompat.START)
+//            } else {
+//                drawerLayout.closeDrawer(GravityCompat.END)
+//            }
+//        }
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
         }
     }

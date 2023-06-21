@@ -28,7 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
         <ImageView
-            android:id="@+id/profile_image"
+            android:id="@+id/icon_toolbar_profile"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:src="@drawable/ic_baseline_account_circle_24"

@@ -27,6 +27,7 @@ import java.util.Locale
 
 @AndroidEntryPoint
 class AddGossipFragment : BottomSheetDialogFragment() {
+    private val tags: MutableList<String> = mutableListOf()
     private lateinit var binding: FragmentAddGossipBinding
     private val viewModel by viewModels<AddViewModel>()
 
@@ -50,7 +51,7 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                     viewModel.addGossip(
                         requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "")!!,
                         binding.addGossip.text,
-                        listOf("Android", "Kotlin", "Jetpack"),
+                        tags,
                         Calendar.getInstance().timeInMillis,
                         Firebase.auth.currentUser!!.uid
                     )
@@ -73,6 +74,13 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                     chip.text = tag
                     chip.isClickable = true
                     chip.isCheckable = true
+                    chip.setOnCheckedChangeListener { _, isChecked ->
+                        if (isChecked) {
+                            tags.plus(chip.text)
+                        } else {
+                            tags.remove(chip.text)
+                        }
+                    }
                     binding.addTagChipGroup.addView(chip)
                 }
             }

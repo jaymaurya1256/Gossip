@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isEmpty
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -68,22 +69,23 @@ class AddGossipFragment : BottomSheetDialogFragment() {
             else{
                 binding.addTagChipGroup.visibility = View.VISIBLE
                 binding.buttonAddTag.text = getString(R.string.hide_tags)
-                binding.addTagChipGroup.removeAllViews()
-                for (tag in Constant.TAGS) {
-                    val chip = Chip(requireContext())
-                    chip.text = tag
-                    chip.isClickable = true
-                    chip.isCheckable = true
-                    chip.setOnCheckedChangeListener { _, isChecked ->
-                        if (isChecked) {
-                            tags.add(chip.text.toString())
-                            Log.d("Tag Added", "onViewCreated: $tags")
-                        } else {
-                            tags.remove(chip.text.toString())
-                            Log.d("Tag Removed", "onViewCreated: $tags")
+                if (binding.addTagChipGroup.isEmpty()) {
+                    for (tag in Constant.TAGS) {
+                        val chip = Chip(requireContext())
+                        chip.text = tag
+                        chip.isClickable = true
+                        chip.isCheckable = true
+                        chip.setOnCheckedChangeListener { _, isChecked ->
+                            if (isChecked) {
+                                tags.add(chip.text.toString())
+                                Log.d("Tag Added", "onViewCreated: $tags")
+                            } else {
+                                tags.remove(chip.text.toString())
+                                Log.d("Tag Removed", "onViewCreated: $tags")
+                            }
                         }
+                        binding.addTagChipGroup.addView(chip)
                     }
-                    binding.addTagChipGroup.addView(chip)
                 }
             }
         }

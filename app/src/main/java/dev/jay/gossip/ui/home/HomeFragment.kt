@@ -71,11 +71,11 @@ class HomeFragment : Fragment() {
             findNavController().navigate(R.id.action_homeFragment_to_addGossipFragment)
         }
 
-        binding.toolbar.iconToolbarProfile.setOnClickListener {
+        binding.fragmentHomeProfileImage.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_userFragment)
         }
 
-        binding.toolbar.iconToolbarSettings.setOnClickListener {
+        binding.fragmentHomeToggleNavDrawer.setOnClickListener {
             if (requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).isDrawerOpen(GravityCompat.START)) {
                 requireActivity().findViewById<DrawerLayout>(R.id.drawer_layout).closeDrawer(GravityCompat.START)
             } else {

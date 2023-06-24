@@ -9,28 +9,30 @@
 
     <ImageView
         android:id="@+id/fragment_home_profile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="16dp"
         android:src="@drawable/ic_baseline_account_circle_24"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
         android:id="@+id/fragment_home_logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="16dp"
+        android:src="@drawable/gossip_icon"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/fragment_home_profile_image"
-        app:layout_constraintStart_toEndOf="@id/fragment_home_toggle_nav_drawer"/>
+        app:layout_constraintEnd_toStartOf="@id/fragment_home_toggle_nav_drawer"
+        app:layout_constraintStart_toEndOf="@id/fragment_home_profile_image"/>
 
     <ImageView
         android:id="@+id/fragment_home_toggle_nav_drawer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:layout_margin="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/ic_baseline_settings_24"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ProgressBar

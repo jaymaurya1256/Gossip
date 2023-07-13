@@ -50,12 +50,13 @@ class AddGossipFragment : BottomSheetDialogFragment() {
                 binding.addGossip.error = null
                 try {
                     viewModel.addGossip(
-                        requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "") ?: Firebase.auth.currentUser?.displayName ?: "",
+                        requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "") ?: Firebase.auth.currentUser!!.displayName.toString(),
                         binding.addGossip.text,
                         tags,
                         Calendar.getInstance().timeInMillis,
                         Firebase.auth.currentUser!!.uid
                     )
+                    Log.d("Shared Preferences name", "onViewCreated: ${requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).getString("name", "")}")
                 } catch (e: Exception) {
                     Snackbar.make(binding.root, getString(R.string.something_went_wrong_gossip_not_added), Snackbar.LENGTH_SHORT).show()
                 }

@@ -10,6 +10,7 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.net.toUri
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
@@ -48,8 +49,17 @@ class HomeFragment : Fragment() {
             findNavController().navigate(directions)
         }
 
+        //Load the profile image in home fragment
+        viewModel.profileImage.observe(viewLifecycleOwner) {
+            binding.fragmentHomeProfileImage.load(it.toUri()) {
+                placeholder(R.drawable.ic_baseline_account_circle_24)
+                error(R.drawable.ic_baseline_account_circle_24)
+            }
+        }
 
+        //set the adapter of recycler view
         binding.listGossip.adapter = adapter
+
 
         viewModel.state.observe(viewLifecycleOwner) {
             when (it) {

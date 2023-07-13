@@ -56,10 +56,10 @@ class UserFragment : Fragment() {
             binding.email.text = it
         }
         viewModel.profileImage.observe(viewLifecycleOwner) {
-//            binding.profileImage.load(it.toUri()) {
-//                placeholder(R.drawable.ic_baseline_account_circle_24)
-//                error(R.drawable.ic_baseline_account_circle_24)
-//            }
+            binding.iconToolbarProfile.load(it.toUri()) {
+                placeholder(R.drawable.ic_baseline_account_circle_24)
+                error(R.drawable.ic_baseline_account_circle_24)
+            }
             binding.progressBar.visibility = View.GONE
         }
     }

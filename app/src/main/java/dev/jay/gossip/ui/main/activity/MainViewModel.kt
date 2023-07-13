@@ -1,5 +1,6 @@
 package dev.jay.gossip.ui.main.activity
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -30,7 +31,7 @@ class MainViewModel @Inject constructor(
         Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.uid).get()
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    if (it.result.getString("name") == null) {
+                    if (it.result.getString("name").isNullOrEmpty()) {
                         goToSignup.tryEmit(true)
 
                     } else {

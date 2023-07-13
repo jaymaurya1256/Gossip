@@ -45,10 +45,10 @@ class MainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             viewModel.goToSignup.collect {
-//                gotoSignupActivity()
+                gotoSignupActivity()
             }
         }
-//        viewModel.checkUserRegistered()
+        viewModel.checkUserRegistered()
 
         //Create Drawer layout
         drawerLayout = binding.drawerLayout

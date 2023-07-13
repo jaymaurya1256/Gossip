@@ -88,9 +88,24 @@ class RegisterFragment : Fragment() {
         binding.progressBar.visibility = View.VISIBLE
         Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.uid)
             .get().addOnSuccessListener {
-                if (it.getString("name") != null) {
+                if (!it.getString("name").isNullOrEmpty()) {
                     binding.progressBar.visibility = View.GONE
                     try {
+                        if (requireActivity().getSharedPreferences("myPrefs", Context.MODE_PRIVATE).contains("name")) else {
+                            val user = User(
+                                name = it.getString("name")!!,
+                                email = it.getString("email")!!,
+                                phone = it.getString("phone")!!,
+                                bio = it.getString("bio")!!,
+                                country = it.getString("country")!!,
+                                dateOfBirth = it.getString("dateOfBirth")!!,
+                                profile = it.getString("profile")!!,
+                                uid = auth.currentUser!!.uid
+                            )
+
+                            addUserDataInSharedPreferences(user)
+                        }
+
                         //Take user to Main Activity
                         goToMainActivity()
                     }catch (e: Exception){
@@ -217,18 +232,7 @@ class RegisterFragment : Fragment() {
             uid = auth.currentUser!!.uid
         )
 
-        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
-        with (sharedPref.edit()) {
-            putString("name", user.name)
-            putString("email", user.email)
-            putString("phone", user.phone)
-            putString("bio", user.bio)
-            putString("country", user.country)
-            putString("dateOfBirth", user.dateOfBirth)
-            putString("profile", user.profile)
-            putString("uid", user.uid)
-            apply()
-        }
+        addUserDataInSharedPreferences(user)
 
         fireStoreDatabase.collection("users").document(auth.currentUser!!.uid)
             .set(user)
@@ -243,5 +247,19 @@ class RegisterFragment : Fragment() {
                     Snackbar.LENGTH_SHORT
                 ).show()
             }
+    }
+    private fun addUserDataInSharedPreferences(user: User) {
+        val sharedPref = requireActivity().getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putString("name", user.name)
+            putString("email", user.email)
+            putString("phone", user.phone)
+            putString("bio", user.bio)
+            putString("country", user.country)
+            putString("dateOfBirth", user.dateOfBirth)
+            putString("profile", user.profile)
+            putString("uid", user.uid)
+            apply()
+        }
     }
 }

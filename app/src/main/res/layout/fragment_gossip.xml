@@ -9,9 +9,9 @@
     <!-- TODO: Update blank fragment layout -->
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/gossip_card_scroll_view"
+        android:id="@+id/gossip_card_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="110dp"
         android:layout_margin="16dp"
         app:cardCornerRadius="8dp"
         app:contentPadding="8dp"
@@ -19,21 +19,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ScrollView
-            android:id="@+id/gossip_scroll_view"
+        <TextView
+            android:id="@+id/gossip"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:maxLines="4"
+            android:ellipsize="end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo" />
 
-            <TextView
-                android:id="@+id/gossip"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/logo" />
-        </ScrollView>
     </com.google.android.material.card.MaterialCardView>
 
     <ProgressBar
@@ -57,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/gossip_card_scroll_view"
+        app:layout_constraintTop_toBottomOf="@id/gossip_card_view"
         app:layout_constraintVertical_bias="0" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

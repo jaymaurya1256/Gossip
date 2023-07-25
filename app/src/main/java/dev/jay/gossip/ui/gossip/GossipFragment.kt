@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -23,7 +24,7 @@ class GossipFragment : Fragment() {
     private val args by navArgs<GossipFragmentArgs>()
     private lateinit var fireStoreDatabase: FirebaseFirestore
     private lateinit var binding: FragmentGossipBinding
-    private val viewModel: GossipViewModel by viewModels()
+    private val viewModel: GossipViewModel by activityViewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +68,11 @@ class GossipFragment : Fragment() {
                     Snackbar.make(binding.root, it.message, Snackbar.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        binding.gossipCardView.setOnClickListener {
+            val customDialog = GossipDialogFragment()
+            customDialog.show(childFragmentManager, "CustomDialogFragment")
         }
 
         binding.addReply.setOnClickListener {

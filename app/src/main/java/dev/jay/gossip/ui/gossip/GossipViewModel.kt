@@ -7,6 +7,8 @@ import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.jay.gossip.documents.Message
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 private const val TAG = "GossipViewModel"
@@ -21,6 +23,8 @@ sealed class GossipEvent {
 class GossipViewModel @Inject constructor(): ViewModel() {
 
     val gossipTitle = MutableLiveData("")
+    val gossipCreatorName = MutableLiveData("")
+    val gossipDate = MutableLiveData("")
     val state = MutableLiveData<GossipEvent>(GossipEvent.Loading)
 
     private fun getMessage(document: String) {
@@ -53,6 +57,15 @@ class GossipViewModel @Inject constructor(): ViewModel() {
             .get()
             .addOnSuccessListener {
                 gossipTitle.value = it.getString("gossip").toString()
+                gossipCreatorName.value = it.getString("creatorName").toString()
+                val time = it.getLong("time")
+                if (time != null) {
+                    val date = Date(time)
+                    val outputFormat = SimpleDateFormat("yyyy-MM-dd hh:mm a", Locale.getDefault())
+                    val formattedTime = outputFormat.format(date)
+                    gossipDate.value = formattedTime
+                }
+
                 getMessage(documentName)
             }
             .addOnFailureListener {

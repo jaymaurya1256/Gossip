@@ -30,6 +30,13 @@
 - **Android** (Jetpack Compose, ViewModel, etc.)
 - **Kotlin**
 - **Firebase** (for authentication and real-time database)
+- **Coroutines** (for background tasks and threading)
+- **Room Database** (for local data storage)
+- **Retrofit** (for API communication)
+- **Glide** (for image loading)
+- **Dagger Hilt** (for dependency injection)
+- **Kotlin Flow** (for reactive programming)
+- **Material3** (for modern UI components)
 
 
 ## Contributing
